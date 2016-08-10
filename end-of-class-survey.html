@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1></h1>
+
+<form action="end-of-class-survey" method="POST">
+
+    
+
+    <div>
+        <label>
+            Do you have any questions for your instructor?
+            <input type="text" name="questions">
+        </label>
+    </div>
+
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+
+</form>
+
+{% endblock %}

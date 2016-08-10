@@ -124,17 +124,34 @@ class StudentMeasure(db.Model):
 
     __tablename__ = "studentsMeasures"
 
-    studentClass_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    studentMeasure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
-    class_id = db.Column(db.Integer, db.ForeignKey('classes.class_id'))
     
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<StudentClass studentClass_id=%s student_id=%s class_id=%s" % (self.studentClass_id, self.student_id, self.class_id)
+        return "<StudentMeasure studentMeasure_id=%s measure_id=%s student_id=%s" % (self.studentMeasure_id, self.measure_id, self.student_id)
 
 
+
+class Response(db.Model):
+    """Association table for students and measures."""
+
+    __tablename__ = "responses"
+
+    response_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    studentMeasure_id = db.Column(db.Integer, db.ForeignKey('studentsMeasures.studentMeasure_id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
+    #Is this a good character limit for a text field?
+    response = db.Column(db.String(500), nullable=True)
+
+
+def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Response reasponse_id=%s studentMeasure_id=%s response=%s" % (self.response_id, self.studentMeasure_id, self.response_id, self.student_id)
 
 
 
@@ -163,12 +180,103 @@ class Measure(db.Model):
 
 
 
+class Subject(db.Model):
+    """Subjects (examples: Statisitics, Algebra, Geometry)."""
+
+    __tablename__ = "subjects"
+
+    subject_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(64), nullable=True)
+    description = db.Column(db.String(200), nullable=True)
+    course_number = db.Column(db.String(25), nullable=True)
+    
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Subject subject_id=%s name=%s" % (self.subject_id, self.name)
+
+class Objective(db.Model):
+    """Learning objectives"""
+
+    __tablename__ = "objectives"
+
+    objective_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(64), nullable=True)
+    description = db.Column(db.String(200), nullable=True)
+
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Objective objective_id=%s name=%s" % (self.objective_id, self.name)
+
+
+
+class Question(db.Model):
+    """Questions."""
+
+    __tablename__ = "questions"
+
+    question_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    objective_id = db.Column(db.Integer, db.ForeignKey('objectives.objective_id'))
+    prompt = db.Column(db.String(500), nullable=False)
+    #this is used to indicate questions that are part of the standard set for 
+    #certain measures
+    flag = db.Column(db.String(25), nullable=True)
+    #this indicates multiple choice, free response, etc
+    question_type = db.Column(db.String(25), nullable=True)
+    correct_answer = db.Column(db.Integer, db.ForeignKey('answersChoices.answerC.crehoice_id'))
+
+
+def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Question question_id=%s prompt=%s flag=%s" % (self.question_id, self.prompt, self.flag)
+
+
+
+class QuestionAnswerChoice(db.Model):
+    """Association table between questions and Answer Choices. Used for multiple choice questions"""
+
+    __tablename__ = "questionAnswerChoices"
+
+    questionAnswerChoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
+    answerChoice_id = db.Column(db.Integer, db.ForeignKey('answersChoices.answerChoice_id'))
+    
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<AnswerChoice answer_choice_id=%s question_id=%s answerChoice_id=%s" % (self.questionAnswerChoice_id, self.question_id, self.answerChoice_id)
+
+
+
+class AnswerChoice(db.Model):
+    """Answer Choices."""
+
+    __tablename__ = "answersChoices"
+
+    answerChoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    #What should I do for other answer choice types, such as images?
+    text = db.Column(db.String(150), nullable=True)
+    #Do I need to make any additional specifications?
+    Value = db.Column(db.Integer, nullable=True)
+    
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answerChoice_id, self.text, self.value)
+
 
 # class Rating(db.Model):
 #     """Rating of a movie by a user."""
 
 #     __tablename__ = "ratings"
-
+ 
 #     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 #     movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
 #     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
