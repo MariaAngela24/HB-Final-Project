@@ -38,14 +38,12 @@ class Teacher(db.Model):
 
 
 
-#double check sty;ing for this type of class and the associated variables
 class TeacherClass(db.Model):
     """Association table for teachers and classes."""
 
-    __tablename__ = "teachersClasses"
+    __tablename__ = "teachers_classes"
 
-    teacherClass_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #Double check that the table name should be plural
+    teacher_class_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.teacher_id'))
     class_id = db.Column(db.Integer, db.ForeignKey('classes.class_id'))
     #Variable below is not in MVP
@@ -55,7 +53,7 @@ class TeacherClass(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<TeacherClass teacherClass_id=%s teacher_id=%s class_id=%s" % (self.teacherClass_id, self.teacher_id, self.class_id)
+        return "<TeacherClass teacher_class_id=%s teacher_id=%s class_id=%s" % (self.teacher_class_id, self.teacher_id, self.class_id)
 
 
 
@@ -78,9 +76,9 @@ class Class(db.Model):
 class StudentClass(db.Model):
     """Association table for teachers and classes."""
 
-    __tablename__ = "studentsClasses"
+    __tablename__ = "students_classes"
 
-    studentClass_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    student_class_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
     class_id = db.Column(db.Integer, db.ForeignKey('classes.class_id'))
     
@@ -88,7 +86,7 @@ class StudentClass(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<StudentClass studentClass_id=%s student_id=%s class_id=%s" % (self.studentClass_id, self.student_id, self.class_id)
+        return "<StudentClass student_class_id=%s student_id=%s class_id=%s" % (self.student_class_id, self.student_id, self.class_id)
 
 
 
@@ -98,16 +96,16 @@ class Student(db.Model):
     __tablename__ = "students"
 
     student_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #What are the tradeoffs for setitng some of these to 'False' for nullable?
+    #QUESTION: Which (if any) of these should be False for nullable?
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
     grade = db.Column(db.Integer, nullable=True)
     gender = db.Column(db.String(20), nullable=True)
-    #If I plan to use the Google API, does this change?
+    #QUESTION: If I plan to use the Google API, does this change?
     username = db.Column(db.String(64), nullable=True)
-    #How can I set upper and lower bounds for a password?
+    #TO DO: Determine if I need to set upper and lower bounds for a password if I use GoogleOAuth
     password = db.Column(db.String(64), nullable=True)
-    #Need to verify that the data we have for math and reading levels is quantitative
+    #TO DO:Need to verify that the data we have for math and reading levels is quantitative
     math_level = db.Column(db.Integer, nullable=True)
     reading_level = db.Column(db.Integer, nullable=True)
 
@@ -122,9 +120,9 @@ class Student(db.Model):
 class StudentMeasure(db.Model):
     """Association table for students and measures."""
 
-    __tablename__ = "studentsMeasures"
+    __tablename__ = "students_measures"
 
-    studentMeasure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    student_measure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
     
@@ -132,26 +130,26 @@ class StudentMeasure(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<StudentMeasure studentMeasure_id=%s measure_id=%s student_id=%s" % (self.studentMeasure_id, self.measure_id, self.student_id)
+        return "<StudentMeasure student_measure_id=%s measure_id=%s student_id=%s" % (self.student_measure_id, self.measure_id, self.student_id)
 
 
 
 class Response(db.Model):
-    """Association table for students and measures."""
+    """Responses to measures."""
 
     __tablename__ = "responses"
 
     response_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    studentMeasure_id = db.Column(db.Integer, db.ForeignKey('studentsMeasures.studentMeasure_id'))
+    student_measure_id = db.Column(db.Integer, db.ForeignKey('students_measures.student_measure_id'))
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
-    #Is this a good character limit for a text field?
+    #QUESTION: Is this a good character limit for a text field?
     response = db.Column(db.String(500), nullable=True)
 
 
 def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Response reasponse_id=%s studentMeasure_id=%s response=%s" % (self.response_id, self.studentMeasure_id, self.response_id, self.student_id)
+        return "<Response reasponse_id=%s student_measure_id=%s response=%s" % (self.response_id, self.student_measure_id, self.response_id, self.student_id)
 
 
 
@@ -165,12 +163,13 @@ class Measure(db.Model):
     #The variable below indicates the type of measure, such as homework survey
     #end of class survey, or quiz
     flag = db.Column(db.String(64), nullable=True)
-    #This is a timestamp for when the measure was administered.  Do I need when it closed
-    #as a variable in this database or do I control for it on the flask side?
+    #This is a timestamp for when the measure was administered.  
+    #QUESTION: Do I need when it closed as a variable in this database or do I control for it on the flask side?
+    #TO DO: Add correct datetime syntax to variable below
     #sent_time = db.Column(db Datetime????) 
     #The variable below tracks whether measure has never been opened, is open and waiting
     #for responses, or is closed
-    status = flag = db.Column(db.String(20), nullable=True)
+    status = db.Column(db.String(20), nullable=True)
        
 
     def __repr__(self):
@@ -222,12 +221,12 @@ class Question(db.Model):
     measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     objective_id = db.Column(db.Integer, db.ForeignKey('objectives.objective_id'))
     prompt = db.Column(db.String(500), nullable=False)
-    #this is used to indicate questions that are part of the standard set for 
+    #This variable is used to indicate questions that are part of the standard set for 
     #certain measures
     flag = db.Column(db.String(25), nullable=True)
-    #this indicates multiple choice, free response, etc
+    #This variable indicates multiple choice, free response, etc
     question_type = db.Column(db.String(25), nullable=True)
-    correct_answer = db.Column(db.Integer, db.ForeignKey('answersChoices.answerC.crehoice_id'))
+    correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'))
 
 
 def __repr__(self):
@@ -242,35 +241,36 @@ class QuestionAnswerChoice(db.Model):
 
     __tablename__ = "questionAnswerChoices"
 
-    questionAnswerChoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    question_answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
-    answerChoice_id = db.Column(db.Integer, db.ForeignKey('answersChoices.answerChoice_id'))
+    answer_choice_id = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'))
     
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<AnswerChoice answer_choice_id=%s question_id=%s answerChoice_id=%s" % (self.questionAnswerChoice_id, self.question_id, self.answerChoice_id)
+        return "<AnswerChoice answer_choice_id=%s question_id=%s answerChoice_id=%s" % (self.question_answer_choice_id, self.question_id, self.answer_choice_id)
 
 
 
 class AnswerChoice(db.Model):
     """Answer Choices."""
 
-    __tablename__ = "answersChoices"
+    __tablename__ = "answers_choices"
 
-    answerChoice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #What should I do for other answer choice types, such as images?
+    answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    #QUESTION: What should I do for other answer choice types, such as images?
     text = db.Column(db.String(150), nullable=True)
-    #Do I need to make any additional specifications?
-    Value = db.Column(db.Integer, nullable=True)
+    #QUESTION: Do I need to make any additional specifications?
+    value = db.Column(db.Integer, nullable=True)
     
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answerChoice_id, self.text, self.value)
+        return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answer_choice_id, self.text, self.value)
 
+#QUESTION: Do I need to do anything like the part that says "define relationship to user"
 
 # class Rating(db.Model):
 #     """Rating of a movie by a user."""

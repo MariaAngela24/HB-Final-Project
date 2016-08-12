@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Today's Learning Objective: Correlation and regression</h2>
+
+<form action="end-of-class-survey/{{ measure_id }}" method="POST">
+
+    <div>
+        <label>
+            <!-- Need to find a way to make the radio button questions required -->
+            Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them. <br>
+            <input type="radio" name="lecture-and-notes" value="1"> 1 - HELP! These make no sense.  <br>
+            <input type="radio" name="lecture-and-notes" value="2"> 2 <br>
+            <input type="radio" name="lecture-and-notes" value="3"> 3 - I get about half of what I see in the handout and my notes. <br>
+            <input type="radio" name="lecture-and-notes" value="4"> 4 <br>
+            <input type="radio" name="lecture-and-notes" value="5"> 5 - Makes perfect sense! I could explain these to someone else.<br><br>
+
+        </label>
+    </div>
+
+    <div>
+        <label>
+            In the space below, record any KEY WORDS or CONCEPTS that you need to revisit. <br>
+            <input type="textarea" name="key-words"><br><br>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            How well did you understand the PROBLEMS you completed during GROUPWORK? <br>
+            <input type="radio" name="group-problems" value="1"> 1 - I was lost the entire time and did not try to contribute ideas to my group's discussions.<br>
+            <input type="radio" name="group-problems" value="2"> 2 <br>
+            <input type="radio" name="group-problems" value="3"> 3 - I understood about half of the problems. I contributed a few good ideas to my group's disucssion.<br>
+            <input type="radio" name="group-problems" value="4"> 4 <br>
+            <input type="radio" name="group-problems" value="5"> 5 - I was on fire today!  I was able to help people in my group understand important concepts.<br><br>
+
+        </label>
+    </div>
+
+<div>
+        <label>
+            Use the space below to record the number(s) of any problem(s) you need to revisit. <br>
+            <input type="textarea" name="problems-to-revisit"><br><br>
+        </label>
+    </div>
+
+<div>
+        <label>
+            Overall, how would you rate your understanding of today's learning objective?<br>
+            <input type="radio" name="overall" value="1"> 1 - I do not understand this at all. I need help from an instructor or a classmate to move forward. <br>
+            <input type="radio" name="overall" value="2"> 2 <br>
+            <input type="radio" name="overall" value="3"> 3 - I understand about half of this. I think I will be able to move forward if I spend some time reviewing on my own or with some other students.<br>
+            <input type="radio" name="overall" value="4"> 4 <br>
+            <input type="radio" name="overall" value="5"> 5 - I should celebrate because I get this! I understand it well enough to explain it to someone else.<br><br>
+
+        </label>
+    </div>
+    <div>
+        <label>
+            Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.<br>
+            <input type="textarea" name="questions"><br><br>
+        </label>
+    </div>
+
+
+
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+
+</form>
+
+{% endblock %}

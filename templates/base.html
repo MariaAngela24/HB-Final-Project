@@ -4,22 +4,21 @@
     <title>Map My Learning</title>
 </head>
 <body>
-    Map My Learning
-
-
-<!-- {% if "user_id" in session %}
+    {% block content %}
+    
+{% if "user_id" in session %}
     <a href="/logout">Logout</a>
 {% else %}
     <a href="/login">Login</a>
-{% endif %} -->
+{% endif %}
 
 <hr>
 
-<!-- {% for flash in get_flashed_messages() %}
+{% for flash in get_flashed_messages() %}
   {{ flash }}
-{% endfor %} -->
+{% endfor %}
 
-{% block content %}
+
     Put your body here.
 {% endblock %}
 

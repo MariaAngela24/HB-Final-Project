@@ -1,3 +1,4 @@
+
 """Movie Ratings."""
 
 from jinja2 import StrictUndefined
@@ -24,6 +25,12 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Student Homepage."""
 
+    #TO DO: Need to add if/else that redirects students who are not logged into
+    #the login page and students who are logged in to their homepage
+
+    #TO DO: Jinja needs to be added in the else statement to enable student to see
+    #their personal data
+
     return render_template("student-homepage.html")
 
 
@@ -31,56 +38,91 @@ def index():
 def end_of_class_survey_form():
     """Show form for End of Class Survey."""
 
-    return render_template("end-of-class-survey.html")
+    #TO DO: Once teacher forms are built, the measure_id determines which survey
+    #to render. Be sure to comment out measure_id hard coding
+
+    measure_id = 1
+    class_id = 1
+    subject_id = 1
+    measure_object = Measure(measure_id=measure_id, class_id=class_id)
+    class_object = Class(class_id=class_id)
+    subject_object = Subject(subject_id=subject_id)
+    db.session.add(measure_object)
+    db.session.add(class_object)
+    db.session.add(subject_object)
+    db.session.commit()
+
+    return render_template("end-of-class-survey.html", measure_id=measure_id)
 
 
-@app.route('/end-of-class-survey', methods=['POST'])
-def register_process():
+@app.route('/end-of-class-survey/<int:measure_id>', methods=['POST'])
+def register_process(measure_id):
     """Process registration."""
 
     # Get form variables
-    email = request.form["email"]
-    password = request.form["password"]
-    age = int(request.form["age"])
-    zipcode = request.form["zipcode"]
+    lecture_notes_rating = request.form.get("lecture-and-notes")
+    key_words = request.form.get("key-words")
+    group_problems_rating = request.form.get("group-problems")
+    problems_to_revisit = request.form.get("problems-to-revisit")
+    overall_rating = request.form.get("overall")
+    questions = request.form.get("questions")
+    
+    #TO DO: Uncomment line below when login routes are added.  Remove student_id hard coding
+    #Looking in the dictionary called session that is defined below for the key
+    #called student_id]
+    #student_id = session["student_id"]
+    student_id = 1
+    student_id_object = Student(student_id=student_id)
 
-    new_user = User(email=email, password=password, age=age, zipcode=zipcode)
+    #Making a student measure object that corresponds to a new row in the Student Measure table
+    student_measure_object = StudentMeasure(measure_id=measure_id, student_id=student_id)
 
-    db.session.add(new_user)
+    #To DO: Remove student_id_object when other student_id hard coding is removed
+    db.session.add(student_measure_object, student_id_object)
+    db.session.commit()
+
+    #TO DO: Remove question_id=1 when JS for generating question_ids is built 
+    response_1  = Response(response=lecture_notes_rating, student_measure_id=student_measure.student_measure_id, question_id=1)
+    response_2  = Response(response=key_words, student_measure_id=student_measure.student_measure_id, question_id=2)
+    response_3  = Response(response=group_problems_rating, student_measure_id=student_measure.student_measure_id, question_id=3)
+    response_4  = Response(response=problems-to-revisit, student_measure_id=student_measure.student_measure_id, question_id=4)
+    response_5  = Response(response=overall_rating, student_measure_id=student_measure.student_measure_id, question_id=5)
+    response_6  = Response(response=questions, student_measure_id=student_measure.student_measure_id, question_id=6)
+
+
+    db.session.add(response_1, response_2, response_3, response_1, response_1, response_1, )
     db.session.commit()
 
     return render_template("survey-acknowledgement.html")
 
+# Need to make separate routes for teacher login and student login
 
-# @app.route('/login', methods=['GET'])
-# def login_form():
+# @app.route('/student-login', methods=['GET'])
+# def student_login_form():
 #     """Show login form."""
 
-#     return render_template("login_form.html")
+#     return render_template("student_login_form.html")
 
 
-# @app.route('/login', methods=['POST'])
-# def login_process():
+# @app.route('/student-login', methods=['POST'])
+# def student_login_process():
 #     """Process login."""
 
 #     # Get form variables
 #     email = request.form["email"]
 #     password = request.form["password"]
 
-#     user = User.query.filter_by(email=email).first()
+      #Need to change email to whatever is required/available in GoogleAuth     
+#     student = Student.query.filter_by(email=email).first()
 
 #     if not user:
 #         flash("No such user")
 #         return redirect("/login")
 
-#     if user.password != password:
-#         flash("Incorrect password")
-#         return redirect("/login")
-
-#     session["user_id"] = user.user_id
+#     session["student_id"] = student.student_id
 
 #     flash("Logged in")
-#     return redirect("/users/%s" % user.user_id)
+#     return redirect("/")
 
 
 # @app.route('/logout')
