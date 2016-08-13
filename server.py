@@ -1,5 +1,5 @@
 
-"""Movie Ratings."""
+"""Map My Learning."""
 
 from jinja2 import StrictUndefined
 
@@ -68,7 +68,6 @@ def register_process(measure_id):
     questions = request.form.get("questions")
     
     #TO DO: Uncomment line below when login routes are added.  Remove student_id hard coding
-    #Looking in the dictionary called session that is defined below for the key
     #called student_id]
     #student_id = session["student_id"]
     student_id = 1
@@ -78,7 +77,8 @@ def register_process(measure_id):
     student_measure_object = StudentMeasure(measure_id=measure_id, student_id=student_id)
 
     #To DO: Remove student_id_object when other student_id hard coding is removed
-    db.session.add(student_measure_object, student_id_object)
+    db.session.add(student_measure_object)
+    db.session.add(student_id_object)
     db.session.commit()
 
     #TO DO: Remove question_id=1 when JS for generating question_ids is built 
@@ -89,8 +89,15 @@ def register_process(measure_id):
     response_5  = Response(response=overall_rating, student_measure_id=student_measure.student_measure_id, question_id=5)
     response_6  = Response(response=questions, student_measure_id=student_measure.student_measure_id, question_id=6)
 
+    #TO DO: Change this an other session.add commmands to a loop 
+    db.session.add(response_1)
+    db.session.add(response_2)
+    db.session.add(response_3)
+    db.session.add(response_4)
+    db.session.add(response_5)
+    db.session.add(response_6)
 
-    db.session.add(response_1, response_2, response_3, response_1, response_1, response_1, )
+
     db.session.commit()
 
     return render_template("survey-acknowledgement.html")
