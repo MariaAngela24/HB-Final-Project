@@ -41,16 +41,6 @@ def end_of_class_survey_form():
     #TO DO: Once teacher forms are built, the measure_id determines which survey
     #to render. Be sure to comment out measure_id hard coding
 
-    measure_id = 1
-    class_id = 1
-    subject_id = 1
-    measure_object = Measure(measure_id=measure_id, class_id=class_id)
-    class_object = Class(class_id=class_id)
-    subject_object = Subject(subject_id=subject_id)
-    db.session.add(measure_object)
-    db.session.add(class_object)
-    db.session.add(subject_object)
-    db.session.commit()
 
     return render_template("end-of-class-survey.html", measure_id=measure_id)
 
@@ -67,29 +57,16 @@ def register_process(measure_id):
     overall_rating = request.form.get("overall")
     questions = request.form.get("questions")
     
-    #TO DO: Uncomment line below when login routes are added.  Remove student_id hard coding
-    #called student_id]
-    #student_id = session["student_id"]
-    student_id = 1
-    student_id_object = Student(student_id=student_id)
 
-    #Making a student measure object that corresponds to a new row in the Student Measure table
-    student_measure_object = StudentMeasure(measure_id=measure_id, student_id=student_id)
+    #QUESTION & TO DO: Each new response and each new question should be unique id's.  How do I code this as a variable?
+    response_1  = Response(response=lecture_notes_rating, student_measure_id=students_measures.student_measure_id, question_id=1)
+    response_2  = Response(response=key_words, student_measure_id=students_measures.student_measure_id, question_id=2)
+    response_3  = Response(response=group_problems_rating, student_measure_id=students_measures.student_measure_id, question_id=3)
+    response_4  = Response(response=problems-to-revisit, student_measure_id=students_measures.student_measure_id, question_id=4)
+    response_5  = Response(response=overall_rating, student_measure_id=students_measures.student_measure_id, question_id=5)
+    response_6  = Response(response=questions, student_measure_id=students_measures.student_measure_id, question_id=6)
 
-    #To DO: Remove student_id_object when other student_id hard coding is removed
-    db.session.add(student_measure_object)
-    db.session.add(student_id_object)
-    db.session.commit()
-
-    #TO DO: Remove question_id=1 when JS for generating question_ids is built 
-    response_1  = Response(response=lecture_notes_rating, student_measure_id=student_measure.student_measure_id, question_id=1)
-    response_2  = Response(response=key_words, student_measure_id=student_measure.student_measure_id, question_id=2)
-    response_3  = Response(response=group_problems_rating, student_measure_id=student_measure.student_measure_id, question_id=3)
-    response_4  = Response(response=problems-to-revisit, student_measure_id=student_measure.student_measure_id, question_id=4)
-    response_5  = Response(response=overall_rating, student_measure_id=student_measure.student_measure_id, question_id=5)
-    response_6  = Response(response=questions, student_measure_id=student_measure.student_measure_id, question_id=6)
-
-    #TO DO: Change this an other session.add commmands to a loop 
+    #TO DO: Change this to a loop 
     db.session.add(response_1)
     db.session.add(response_2)
     db.session.add(response_3)
