@@ -109,6 +109,7 @@ def register_process(measure_id):
 #     return redirect("/")
 
 
+# Ask instructors for good login/logout code
 # @app.route('/logout')
 # def logout():
 #     """Log out."""

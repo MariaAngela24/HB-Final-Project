@@ -105,10 +105,8 @@ class Student(db.Model):
     username = db.Column(db.String(64), nullable=True)
     #TO DO: Determine if I need to set upper and lower bounds for a password if I use GoogleOAuth
     password = db.Column(db.String(64), nullable=True)
-    #TO DO:Need to verify that the data we have for math and reading levels is quantitative
-    math_level = db.Column(db.Integer, nullable=True)
     math_placement = db.Column(db.String(25), nullable=True)
-    reading_grade_equivalent = db.Column(db.Integer, nullable=True)
+    reading_grade_equivalent = db.Column(db.Float, nullable=True)
 
     
     def __repr__(self):
