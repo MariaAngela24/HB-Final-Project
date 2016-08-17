@@ -64,6 +64,8 @@ class Class(db.Model):
 
     class_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.subject_id'))
+    name = db.Column(db.String(64), nullable=True)
+    #TO DO: Need to find a way to account for term in the data model
        
 
     def __repr__(self):
@@ -74,7 +76,7 @@ class Class(db.Model):
 
 
 class StudentClass(db.Model):
-    """Association table for teachers and classes."""
+    """Association table for students and classes."""
 
     __tablename__ = "students_classes"
 
