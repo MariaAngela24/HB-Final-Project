@@ -6,24 +6,76 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 #I had to pip install flask_debug_toolbar to get this to run.  Do I need to do anything to get that
 #to work in the future?
+from flask import url_for
+from flask_oauthlib.client import OAuth
+ 
+
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
+from secrets import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+
+# GOOGLE_CLIENT_ID = 'PUT CLIENT ID'
+# GOOGLE_CLIENT_SECRET = 'PUT CLIENT SECRET'
+REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
+
+# Required to use Flask sessions and the debug toolbar
+SECRET_KEY = 'ABC'
+DEBUG = True
 
 
 app = Flask(__name__)
+app.debug = DEBUG
+app.secret_key = SECRET_KEY
+oauth = OAuth()
 
-# Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
 
-# Normally, if you use an undefined variable in Jinja2, it fails silently.
+
+# TO DO: Normally, if you use an undefined variable in Jinja2, it fails silently.
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
+
+
+google = oauth.remote_app('google',
+                          base_url='https://www.google.com/accounts/',
+                          authorize_url='https://accounts.google.com/o/oauth2/auth',
+                          request_token_url=None,
+                          request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email',
+                                                'response_type': 'code'},
+                          access_token_url='https://accounts.google.com/o/oauth2/token',
+                          access_token_method='POST',
+                          access_token_params={'grant_type': 'authorization_code'},
+                          consumer_key=GOOGLE_CLIENT_ID,
+                          consumer_secret=GOOGLE_CLIENT_SECRET)
+
+
 
 
 @app.route('/')
 def index():
     """Student Homepage."""
+
+    access_token = session.get('access_token')
+    if access_token is None:
+        return redirect(url_for('login'))
+
+    access_token = access_token[0]
+    from urllib2 import Request, urlopen, URLError
+ 
+    headers = {'Authorization': 'OAuth '+access_token}
+    req = Request('https://www.googleapis.com/oauth2/v1/userinfo',
+                  None, headers)
+
+    try:
+        res = urlopen(req)
+    except URLError, e:
+        if e.code == 401:
+            # Unauthorized - bad token
+            session.pop('access_token', None)
+            return redirect(url_for('login'))
+        return res.read()
+ 
+    return res.read()
 
     #TO DO: Need to add if/else that redirects students who are not logged into
     #the login page and students who are logged in to their homepage
@@ -31,7 +83,8 @@ def index():
     #TO DO: Jinja needs to be added in the else statement to enable student to see
     #their personal data
 
-    return render_template("student-homepage.html")
+
+    # return render_template("student-homepage.html")
 
 
 @app.route('/end-of-class-survey', methods=['GET'])
@@ -42,10 +95,12 @@ def end_of_class_survey_form():
     #to render. Be sure to comment out measure_id hard coding
 
 
-    return render_template("end-of-class-survey.html", measure_id=measure_id)
+    return render_template("end-of-class-survey.html")
+        
 
 
-@app.route('/end-of-class-survey/<int:measure_id>', methods=['POST'])
+@app.route('/end-of-class-survey/', methods=['POST'])
+#TO DO: Change name and docstring
 def register_process(measure_id):
     """Process registration."""
 
@@ -81,6 +136,27 @@ def register_process(measure_id):
 
 # Need to make separate routes for teacher login and student login
 
+@app.route('/login')
+def login():
+    callback=url_for('authorized', _external=True)
+    return google.authorize(callback=callback)
+
+    #_external=True
+
+
+
+@app.route(REDIRECT_URI)
+@google.authorized_handler
+def authorized(resp):
+    access_token = resp['access_token']
+    session['access_token'] = access_token, ''
+    return redirect(url_for('index'))
+
+
+
+@google.tokengetter
+def get_access_token():
+    return session.get('access_token')
 # @app.route('/student-login', methods=['GET'])
 # def student_login_form():
 #     """Show login form."""
@@ -193,6 +269,8 @@ def register_process(measure_id):
 #     return redirect("/movies/%s" % movie_id)
 
 
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
@@ -201,6 +279,6 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
 
     app.run(host='0.0.0.0')
