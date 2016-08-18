@@ -126,8 +126,8 @@ def load_students_classes():
     for i, row in enumerate(open("seed_data/u.student_class.txt")):
         row = row.rstrip()
         student_id, class_id = row.split("|")
-        student_class = StudentClass(student=student_id, 
-                    class_id=class_id) 
+        student_class = StudentClass(student_id=student_id, 
+                                    class_id=class_id) 
                         
         db.session.add(student_class)
 
@@ -143,8 +143,8 @@ def load_students_measures():
     for i, row in enumerate(open("seed_data/u.student_measure.txt")):
         row = row.rstrip()
         student_id, measure_id = row.split("|")
-        student_measure = StudentClass(student=student_id, 
-                    measure_id=measure_id) 
+        student_measure = StudentMeasure(student_id=student_id, 
+                                    measure_id=measure_id) 
                         
         db.session.add(student_measure)
 

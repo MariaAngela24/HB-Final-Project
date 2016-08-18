@@ -14,7 +14,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
 
-#This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that ww loaded vua terminal
+#This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
 # GOOGLE_CLIENT_ID = 'PUT CLIENT ID'
 # GOOGLE_CLIENT_SECRET = 'PUT CLIENT SECRET'
