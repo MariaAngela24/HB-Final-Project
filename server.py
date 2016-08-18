@@ -7,14 +7,15 @@ from flask import Flask, render_template, request, flash, redirect, session
 #I had to pip install flask_debug_toolbar to get this to run.  Do I need to do anything to get that
 #to work in the future?
 from flask import url_for
-from flask_oauthlib.client import OAuth
+from flask_oauth import OAuth
  
 
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
-from secrets import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 
+#This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that ww loaded vua terminal
+import os
 # GOOGLE_CLIENT_ID = 'PUT CLIENT ID'
 # GOOGLE_CLIENT_SECRET = 'PUT CLIENT SECRET'
 REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
@@ -45,9 +46,9 @@ google = oauth.remote_app('google',
                           access_token_url='https://accounts.google.com/o/oauth2/token',
                           access_token_method='POST',
                           access_token_params={'grant_type': 'authorization_code'},
-                          consumer_key=GOOGLE_CLIENT_ID,
-                          consumer_secret=GOOGLE_CLIENT_SECRET)
-
+                          consumer_key=os.environ["GOOGLE_CLIENT_ID"],
+                          consumer_secret=os.environ["GOOGLE_CLIENT_SECRET"]
+)
 
 
 
@@ -75,7 +76,10 @@ def index():
             return redirect(url_for('login'))
         return res.read()
  
-    return res.read()
+    user_info = res.read()
+
+    #TO DO: finish helper function to save user data
+    #save_user(user_info)
 
     #TO DO: Need to add if/else that redirects students who are not logged into
     #the login page and students who are logged in to their homepage
@@ -84,7 +88,7 @@ def index():
     #their personal data
 
 
-    # return render_template("student-homepage.html")
+    return render_template("student-homepage.html")
 
 
 @app.route('/end-of-class-survey', methods=['GET'])

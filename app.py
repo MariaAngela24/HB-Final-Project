@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, session
-from flask_oauthlib.client import OAuth
+from flask_oauth import OAuth
  
- from secrets import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from secrets import GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
  
 REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
  
@@ -14,7 +14,7 @@ app.secret_key = SECRET_KEY
 oauth = OAuth()
  
 google = oauth.remote_app('google',
-                          base_url='https://www.google.com/accounts/',
+                             ='https://www.google.com/accounts/',
                           authorize_url='https://accounts.google.com/o/oauth2/auth',
                           request_token_url=None,
                           request_token_params={'scope': 'https://www.googleapis.com/auth/userinfo.email',
