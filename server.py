@@ -81,9 +81,7 @@ def index():
     #TO DO: finish helper function to save user data
     #save_user(user_info)
 
-    #TO DO: Need to add if/else that redirects students who are not logged into
-    #the login page and students who are logged in to their homepage
-
+  
     #TO DO: Jinja needs to be added in the else statement to enable student to see
     #their personal data
 
@@ -95,18 +93,14 @@ def index():
 def end_of_class_survey_form():
     """Show form for End of Class Survey."""
 
-    #TO DO: Once teacher forms are built, the measure_id determines which survey
-    #to render. Be sure to comment out measure_id hard coding
-
-
+   
     return render_template("end-of-class-survey.html")
         
 
 
 @app.route('/end-of-class-survey/', methods=['POST'])
-#TO DO: Change name and docstring
-def register_process(measure_id):
-    """Process registration."""
+def survey_process(measure_id):
+    """Process responses from survey"""
 
     # Get form variables
     lecture_notes_rating = request.form.get("lecture-and-notes")
