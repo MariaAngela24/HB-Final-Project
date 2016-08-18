@@ -87,11 +87,16 @@ def load_measures():
 
     print "Measures"
 
-    measure = Measure(class_id=1, 
-                    flag="end class survey", 
-                    #To Do: uncomment after fixing datetime in model.py sent_time=???
-                    status="never opened")
-    db.session.add(measure)
+    for i, row in enumerate(open("seed_data/u.measure.txt")):
+        row = row.rstrip()
+        class_id, flag, status = row.split("|")
+        measure = Measure(class_id=class_id, 
+                        flag=flag,
+                        #TO DO: Add datetime
+                        status=status) 
+                        
+        db.session.add(measure)
+
     db.session.commit()
 
 
@@ -108,6 +113,40 @@ def load_teachers_classes():
                     class_id=class_id) 
                         
         db.session.add(teacher_class)
+
+    db.session.commit()
+
+
+
+def load_students_classes():
+    """Load five rows (one for each student) into the students_classes association table"""
+
+    print "Students_Classes"
+
+    for i, row in enumerate(open("seed_data/u.student_class.txt")):
+        row = row.rstrip()
+        student_id, class_id = row.split("|")
+        student_class = StudentClass(student=student_id, 
+                    class_id=class_id) 
+                        
+        db.session.add(student_class)
+
+    db.session.commit()
+
+
+
+def load_students_measures():
+    """Load five rows (one for each student) into the students_measures association table"""
+
+    print "Students_Measures"
+
+    for i, row in enumerate(open("seed_data/u.student_measure.txt")):
+        row = row.rstrip()
+        student_id, measure_id = row.split("|")
+        student_measure = StudentClass(student=student_id, 
+                    measure_id=measure_id) 
+                        
+        db.session.add(student_measure)
 
     db.session.commit()
 
@@ -137,6 +176,9 @@ if __name__ == "__main__":
     load_students()
     load_measures()
     load_teachers_classes()
+    load_students_classes()
+    load_students_measures()
+  
   
     
     # set_val_user_id()

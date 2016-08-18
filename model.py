@@ -124,8 +124,9 @@ class StudentMeasure(db.Model):
     __tablename__ = "students_measures"
 
     student_measure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.student_id'))
+    measure_id = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    
     
 
     def __repr__(self):
