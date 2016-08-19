@@ -66,6 +66,12 @@ class Class(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.subject_id'))
     name = db.Column(db.String(64), nullable=True)
     #TO DO: Need to find a way to account for term in the data model
+
+    teachers = db.relationship("Teacher", 
+                            secondary="teachers_classes",
+                            backref=db.backref("teachers", order_by=last_name))
+
+
        
 
     def __repr__(self):
@@ -109,6 +115,10 @@ class Student(db.Model):
     password = db.Column(db.String(64), nullable=True)
     math_placement = db.Column(db.String(25), nullable=True)
     reading_grade_equivalent = db.Column(db.Float, nullable=True)
+
+    classes = db.relationship("Class", 
+                            secondary="students_classes",
+                            backref=db.backref("students", order_by=last_name))
 
     
     def __repr__(self):
@@ -172,6 +182,10 @@ class Measure(db.Model):
     #The variable below tracks whether measure has never been opened, is open and waiting
     #for responses, or is closed
     status = db.Column(db.String(20), nullable=True)
+
+    students = db.relationship("Student", 
+                            secondary="students_measures",
+                            backref=db.backref("measures", order_by=last_name))
        
 
     def __repr__(self):
@@ -231,6 +245,11 @@ class Question(db.Model):
     correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'), nullable=True)
 
 
+    answer_choices = db.relationship("AnswerChoice", 
+                            secondary="questions_answer_choices",
+                            backref=db.backref("questions", order_by=answer_choice_id))
+
+
 def __repr__(self):
         """Provide helpful representation when printed."""
 
@@ -241,7 +260,7 @@ def __repr__(self):
 class QuestionAnswerChoice(db.Model):
     """Association table between questions and Answer Choices. Used for multiple choice questions"""
 
-    __tablename__ = "questionAnswerChoices"
+    __tablename__ = "questions_answer_choices"
 
     question_answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
@@ -272,37 +291,13 @@ class AnswerChoice(db.Model):
 
         return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answer_choice_id, self.text, self.value)
 
-#QUESTION: Do I need to do anything like the part that says "define relationship to user"
 
-# class Rating(db.Model):
-#     """Rating of a movie by a user."""
-
-#     __tablename__ = "ratings"
- 
-#     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     score = db.Column(db.Integer)
-
-#     # Define relationship to user
-#     user = db.relationship("User",
-#                            backref=db.backref("ratings", order_by=rating_id))
-
-#     # Define relationship to movie
-#     movie = db.relationship("Movie",
-#                             backref=db.backref("ratings", order_by=rating_id))
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#         return "<Rating rating_id=%s movie_id=%s user_id=%s score=%s>" % (
-#             self.rating_id, self.movie_id, self.user_id, self.score)
 
 
 ##############################################################################
 # Helper functions
 #move this line back to server file when that is created
-app = Flask(__name__)
+#app = Flask(__name__)
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
