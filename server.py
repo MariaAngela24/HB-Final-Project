@@ -94,7 +94,7 @@ def end_of_class_survey_form():
     """Show form for End of Class Survey."""
 
    
-    return render_template("end-of-class-survey.html")
+    return render_template("end-of-class-survey.html", survey=    )
         
 
 

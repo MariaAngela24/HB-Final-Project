@@ -81,9 +81,9 @@ def load_students():
     db.session.commit()
 
 
-#TO DO: Change this to three measures so there is one for each class
+
 def load_measures():
-    """Load a single measure into database."""
+    """Load rows into the measures table."""
 
     print "Measures"
 
@@ -102,7 +102,7 @@ def load_measures():
 
 
 def load_teachers_classes():
-    """Load three rows into the teachers_classes association table"""
+    """Load rows into the teachers_classes association table"""
 
     print "Teachers_Classes"
 
@@ -119,7 +119,7 @@ def load_teachers_classes():
 
 
 def load_students_classes():
-    """Load five rows (one for each student) into the students_classes association table"""
+    """Load rows into the students_classes association table"""
 
     print "Students_Classes"
 
@@ -136,7 +136,7 @@ def load_students_classes():
 
 
 def load_students_measures():
-    """Load five rows (one for each student) into the students_measures association table"""
+    """Load rows into the students_measures association table"""
 
     print "Students_Measures"
 
@@ -144,15 +144,82 @@ def load_students_measures():
         row = row.rstrip()
         student_id, measure_id = row.split("|")
         student_measure = StudentMeasure(student_id=student_id, 
-                                    measure_id=measure_id) 
+                                        measure_id=measure_id) 
                         
         db.session.add(student_measure)
 
     db.session.commit()
 
+
+
+def load_objectives():
+    """Load rows into the objectives table"""
+
+    print "Objectives"
+
+    for i, row in enumerate(open("seed_data/u.objective.txt")):
+        row = row.rstrip()
+        name, description = row.split("|")
+        objective = Objective(name=name,
+                            description=description)
+                                              
+        db.session.add(objective)
+
+    db.session.commit()
+
+
+
+def load_questions():
+    """Load survey questions into table"""
+
+    print "Questions"
+
+    for i, row in enumerate(open("seed_data/u.question.txt")):
+        row = row.rstrip()
+        measure_id, objective_id, prompt, flag, question_type = row.split("|")
+        question = Question(measure_id=measure_id, 
+                            objective_id=objective_id,
+                            prompt=prompt,
+                            flag=flag,
+                            question_type=question_type) 
+                        
+        db.session.add(question)
+
+    db.session.commit()
+
     
 
+def load_answers_choices():
+    """Load answer choices into table"""
 
+    print "Answers_Choices"
+
+    for i, row in enumerate(open("seed_data/u.answer_choice.txt")):
+        row = row.rstrip()
+        text, value = row.split("|")
+        answer_choice = AnswerChoice(text=text,
+                                    value=value) 
+                        
+        db.session.add(answer_choice)
+
+    db.session.commit()
+
+
+
+def load_questions_answers_choices():
+    """Load answer choices into table"""
+
+    print "Questions_Answers_Choices"
+
+    for i, row in enumerate(open("seed_data/u.question_answer_choice.txt")):
+        row = row.rstrip()
+        question_id, answer_choice_id = row.split("|")
+        question_answer_choice = QuestionAnswerChoice(question_id=question_id,
+                                                    answer_choice_id = answer_choice_id) 
+                        
+        db.session.add(question_answer_choice)
+
+    db.session.commit()
 # def set_val_user_id():
 #     """Set value for the next user_id after seeding database"""
 
@@ -178,6 +245,12 @@ if __name__ == "__main__":
     load_teachers_classes()
     load_students_classes()
     load_students_measures()
+    load_objectives()
+    load_questions()
+    load_answers_choices()
+    load_questions_answers_choices()
+
+
   
   
     

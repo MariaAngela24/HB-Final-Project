@@ -228,7 +228,7 @@ class Question(db.Model):
     flag = db.Column(db.String(25), nullable=True)
     #This variable indicates multiple choice, free response, etc
     question_type = db.Column(db.String(25), nullable=True)
-    correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'))
+    correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'), nullable=True)
 
 
 def __repr__(self):
