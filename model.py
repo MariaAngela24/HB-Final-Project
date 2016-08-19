@@ -5,6 +5,7 @@ import time
 #Delete the line below when server file is created
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 #This was from ratings.  Will probably delete if not used
 #import correlation
 
@@ -69,7 +70,7 @@ class Class(db.Model):
 
     teachers = db.relationship("Teacher", 
                             secondary="teachers_classes",
-                            backref=db.backref("teachers", order_by=last_name))
+                            backref=db.backref("classes"))
 
 
        
@@ -184,8 +185,8 @@ class Measure(db.Model):
     status = db.Column(db.String(20), nullable=True)
 
     students = db.relationship("Student", 
-                            secondary="students_measures",
-                            backref=db.backref("measures", order_by=last_name))
+                            secondary="students_measures", order_by=Student.last_name,
+                            backref=db.backref("measures"))
        
 
     def __repr__(self):
@@ -228,6 +229,25 @@ class Objective(db.Model):
 
 
 
+class AnswerChoice(db.Model):
+    """Answer Choices."""
+
+    __tablename__ = "answers_choices"
+
+    answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    #QUESTION: What should I do for other answer choice types, such as images?
+    text = db.Column(db.String(150), nullable=True)
+    #QUESTION: Do I need to make any additional specifications?
+    value = db.Column(db.Integer, nullable=True)
+    
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answer_choice_id, self.text, self.value)
+
+
+
 class Question(db.Model):
     """Questions."""
 
@@ -246,14 +266,16 @@ class Question(db.Model):
 
 
     answer_choices = db.relationship("AnswerChoice", 
-                            secondary="questions_answer_choices",
-                            backref=db.backref("questions", order_by=answer_choice_id))
+                            secondary="questions_answer_choices", order_by=AnswerChoice.answer_choice_id,
+                            backref=db.backref("questions"))
 
 
 def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<Question question_id=%s prompt=%s flag=%s" % (self.question_id, self.prompt, self.flag)
+
+
 
 
 
@@ -274,30 +296,12 @@ class QuestionAnswerChoice(db.Model):
 
 
 
-class AnswerChoice(db.Model):
-    """Answer Choices."""
-
-    __tablename__ = "answers_choices"
-
-    answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #QUESTION: What should I do for other answer choice types, such as images?
-    text = db.Column(db.String(150), nullable=True)
-    #QUESTION: Do I need to make any additional specifications?
-    value = db.Column(db.Integer, nullable=True)
-    
-
-    def __repr__(self):
-        """Provide helpful representation when printed."""
-
-        return "<AnswerChoice answerChoice_id=%s text=%s value=%s" % (self.answer_choice_id, self.text, self.value)
-
 
 
 
 ##############################################################################
 # Helper functions
-#move this line back to server file when that is created
-#app = Flask(__name__)
+
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
@@ -314,5 +318,6 @@ if __name__ == "__main__":
 
     #Uncomment when line 191 is moved back to server
     #from server import app
+    from server import app
     connect_to_db(app)
     print "Connected to DB."
