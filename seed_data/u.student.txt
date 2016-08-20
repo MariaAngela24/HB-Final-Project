@@ -1,5 +1,5 @@
-Dummy_1|Student_1|12|female|Dummy_Login_1|Dummy_Password_1|24|Arithmetic|5.8
-Dummy_2|Student_2|12|female|Dummy_Login_2|Dummy_Password_2|34|Pre-Algebra|6.7
-Dummy_3|Student_3|12|male|Dummy_Login_3|Dummy_Password_3|45|Elementary Algebra|9.3
-Dummy_4|Student_4|12|female|Dummy_Login_4|Dummy_Password_4|77|Statistics|11.5
-Dummy_5|Student_5|12|female|Dummy_Login_5|Dummy_Password_5|84|Trig/Pre-Calc|13
+Dummy_1|Student_1|12|female|dummy1student1@gmail.com|Arithmetic|5.8
+Dummy_2|Student_2|12|female|dummy2student2@gmail.com|Pre-Algebra|6.7
+Dummy_3|Student_3|12|male|Dummy_Login_3|Elementary Algebra|9.3
+Dummy_4|Student_4|12|female|Dummy_Login_4|Statistics|11.5
+Dummy_5|Student_5|12|female|Dummy_Login_5|Trig/Pre-Calc|13

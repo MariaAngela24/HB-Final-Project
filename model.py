@@ -29,7 +29,6 @@ class Teacher(db.Model):
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
     username = db.Column(db.String(64), nullable=True)
-    password = db.Column(db.String(64), nullable=True)
     
 
     def __repr__(self):
@@ -110,10 +109,7 @@ class Student(db.Model):
     last_name = db.Column(db.String(64), nullable=True)
     grade = db.Column(db.Integer, nullable=True)
     gender = db.Column(db.String(20), nullable=True)
-    #QUESTION: If I plan to use the Google API, does this change?
     username = db.Column(db.String(64), nullable=True)
-    #TO DO: Determine if I need to set upper and lower bounds for a password if I use GoogleOAuth
-    password = db.Column(db.String(64), nullable=True)
     math_placement = db.Column(db.String(25), nullable=True)
     reading_grade_equivalent = db.Column(db.Float, nullable=True)
 

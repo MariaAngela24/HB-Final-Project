@@ -15,8 +15,7 @@ def load_teachers():
 
     teacher = Teacher(first_name="Maria", 
                     last_name="Mendiburo", 
-                    username="username", 
-                    password="password")
+                    username="mariamendiburo@gmail.com")
     db.session.add(teacher)
     db.session.commit()
 
@@ -65,14 +64,13 @@ def load_students():
 
     for i, row in enumerate(open("seed_data/u.student.txt")):
         row = row.rstrip()
-        first_name, last_name, grade, gender, username, password, math_level, math_placement, reading_grade_equivalent = row.split("|")
+        first_name, last_name, grade, gender, username, math_placement, reading_grade_equivalent = row.split("|")
         student = Student(
                         first_name=first_name, 
                         last_name=last_name, 
                         grade=grade, 
                         gender=gender, 
                         username=username, 
-                        password=password, 
                         math_placement=math_placement, 
                         reading_grade_equivalent=reading_grade_equivalent)
 

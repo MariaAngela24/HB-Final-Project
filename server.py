@@ -4,8 +4,7 @@
 from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, request, flash, redirect, session
-#I had to pip install flask_debug_toolbar to get this to run.  Do I need to do anything to get that
-#to work in the future?
+#Had to pip install flask_debug_toolbar to get this to run.  
 from flask import url_for
 from flask_oauth import OAuth
  
@@ -16,8 +15,7 @@ from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass,
 
 #This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
-# GOOGLE_CLIENT_ID = 'PUT CLIENT ID'
-# GOOGLE_CLIENT_SECRET = 'PUT CLIENT SECRET'
+
 REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 # Required to use Flask sessions and the debug toolbar
@@ -54,7 +52,7 @@ google = oauth.remote_app('google',
 
 @app.route('/')
 def index():
-    """Student Homepage."""
+    """Show Student Homepage."""
 
     access_token = session.get('access_token')
     if access_token is None:
@@ -78,23 +76,48 @@ def index():
  
     user_info = res.read()
 
-    #TO DO: finish helper function to save user data
-    #save_user(user_info)
+    #Use to view user info returned by Google OAuth
+    #print user_info
+    
+    #Grabbing email address returned by Google OAuth (Dictionary returned from Google OAuth is called user_info)
+    email=user_info.email
+    #Using email address returned by Google OAuth to query for student_id and storing student_id in web session
+    session["student_id"] = Student.query.filter_by(username=email).student_id
+    print session["student_id"]
 
-  
     #TO DO: Jinja needs to be added in the else statement to enable student to see
     #their personal data
 
-
     return render_template("student-homepage.html")
+
+    #TO DO: Add a page for students to choose from a list of classes (query StudentClass table for all rows with matching student_id)
+
 
 
 @app.route('/end-of-class-survey', methods=['GET'])
 def end_of_class_survey_form():
     """Show form for End of Class Survey."""
 
+    student_id = session["student_id"]
+    student = Student.query.get(student_id)
+    #When students are in more than one class, need to change lines below. Class_id should already be stored in web session
+    _class = student.classes[0]
+    class_id = _class.class_id
+
+    #TO DO : Get measure -object
+
+    #TO DO: Grab measure_id, grab all questions associated with that measure_id, grab all answer choices associated with questions
     #TO DO: Add survey= when I figure out Jinja
+
+    #measure_id = Measure.query.filter_by(class_id=, sent_time)
+    #dictionary(list?) of question objects = Question.query.filter_by(measure_id=measure_id)
+    #unpack list of questions
+    #create list of question id's from list
+    #for question in list_of_questions:
+    #return answer choices as keys
+
     return render_template("end-of-class-survey.html")
+       #TO DO , Send measure _object in above line of code)
         
 
 
@@ -155,32 +178,7 @@ def authorized(resp):
 @google.tokengetter
 def get_access_token():
     return session.get('access_token')
-# @app.route('/student-login', methods=['GET'])
-# def student_login_form():
-#     """Show login form."""
 
-#     return render_template("student_login_form.html")
-
-
-# @app.route('/student-login', methods=['POST'])
-# def student_login_process():
-#     """Process login."""
-
-#     # Get form variables
-#     email = request.form["email"]
-#     password = request.form["password"]
-
-      #Need to change email to whatever is required/available in GoogleAuth     
-#     student = Student.query.filter_by(email=email).first()
-
-#     if not user:
-#         flash("No such user")
-#         return redirect("/login")
-
-#     session["student_id"] = student.student_id
-
-#     flash("Logged in")
-#     return redirect("/")
 
 
 # Ask instructors for good login/logout code
