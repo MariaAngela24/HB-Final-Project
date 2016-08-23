@@ -34,8 +34,7 @@ def load_subjects():
                         course_number=course_number) 
                         
         db.session.add(subject)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -51,8 +50,7 @@ def load_classes():
                     name=name) 
                         
         db.session.add(_class)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -75,8 +73,7 @@ def load_students():
                         reading_grade_equivalent=reading_grade_equivalent)
 
         db.session.add(student)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -94,8 +91,7 @@ def load_measures():
                         status=status) 
                         
         db.session.add(measure)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -111,8 +107,7 @@ def load_teachers_classes():
                     class_id=class_id) 
                         
         db.session.add(teacher_class)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -128,8 +123,7 @@ def load_students_classes():
                                     class_id=class_id) 
                         
         db.session.add(student_class)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -145,8 +139,7 @@ def load_students_measures():
                                         measure_id=measure_id) 
                         
         db.session.add(student_measure)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -162,8 +155,7 @@ def load_objectives():
                             description=description)
                                               
         db.session.add(objective)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -182,8 +174,7 @@ def load_questions():
                             question_type=question_type) 
                         
         db.session.add(question)
-
-    db.session.commit()
+        db.session.commit()
 
     
 
@@ -199,8 +190,7 @@ def load_answers_choices():
                                     value=value) 
                         
         db.session.add(answer_choice)
-
-    db.session.commit()
+        db.session.commit()
 
 
 
@@ -216,8 +206,7 @@ def load_questions_answers_choices():
                                                     answer_choice_id = answer_choice_id) 
                         
         db.session.add(question_answer_choice)
-
-    db.session.commit()
+        db.session.commit()
 # def set_val_user_id():
 #     """Set value for the next user_id after seeding database"""
 

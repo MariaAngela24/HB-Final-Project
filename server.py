@@ -16,6 +16,8 @@ from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass,
 #This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
 
+import json
+
 REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
 
 # Required to use Flask sessions and the debug toolbar
@@ -75,15 +77,36 @@ def index():
         return res.read()
  
     user_info = res.read()
-
+    user_info_dict = json.loads(user_info)
+    
     #Use to view user info returned by Google OAuth
-    #print user_info
+    print type(user_info_dict)
+    print user_info_dict
     
     #Grabbing email address returned by Google OAuth (Dictionary returned from Google OAuth is called user_info)
-    email=user_info.email
+    #Changing this to email=user_info.get("email", None) would allow me to set None as the default.  
+    #That may be useful when setting up case for creating new accounts 
+    email=user_info_dict["email"]
+    print email
     #Using email address returned by Google OAuth to query for student_id and storing student_id in web session
-    session["student_id"] = Student.query.filter_by(username=email).student_id
-    print session["student_id"]
+    student_object = Student.query.filter_by(username=email).first()
+    print student_object
+    student_id = student_object.student_id
+    print student_id
+    student_class_object = StudentClass.query.filter_by(student_id=student_id).first()
+    print student_class_object
+    class_id = student_class_object.class_id
+    print class_id
+
+    session["student_id"] = student_id
+    session["class_id"] = class_id
+    print session
+    # student_id = session["student_id"]
+    # class_object = 
+    # print class_object
+
+    # print session["student_id"]
+    # class_id = 
 
     #TO DO: Jinja needs to be added in the else statement to enable student to see
     #their personal data
@@ -94,15 +117,23 @@ def index():
 
 
 
-@app.route('/end-of-class-survey', methods=['GET'])
-def end_of_class_survey_form():
+@app.route('/end-of-class-survey/<meaure_id>', methods=['GET'])
+def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
 
     student_id = session["student_id"]
+    print "student_id=", student_id
+    #Get studeent object from student table
     student = Student.query.get(student_id)
+    print "student=", student
+    print type(student)
     #When students are in more than one class, need to change lines below. Class_id should already be stored in web session
+    #use relationship between classes and students table to get first class object for a student_id
     _class = student.classes[0]
+    print "_class=", _class
+    #get class_id for class object
     class_id = _class.class_id
+    print "class_id=", class_id
 
     #TO DO : Get measure -object
 
@@ -110,7 +141,10 @@ def end_of_class_survey_form():
     #TO DO: Add survey= when I figure out Jinja
 
     #measure_id = Measure.query.filter_by(class_id=, sent_time)
-    #dictionary(list?) of question objects = Question.query.filter_by(measure_id=measure_id)
+    #dictionary(list?) of question objects = 
+    #questions=Question.query.filter_by(measure_id=measure_id)
+    #for question in questions:
+        #
     #unpack list of questions
     #create list of question id's from list
     #for question in list_of_questions:
