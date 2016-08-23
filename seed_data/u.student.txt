@@ -3,4 +3,3 @@ Dummy_2|Student_2|12|female|dummy2student2@gmail.com|Pre-Algebra|6.7
 Dummy_3|Student_3|12|male|Dummy_Login_3|Elementary Algebra|9.3
 Dummy_4|Student_4|12|female|Dummy_Login_4|Statistics|11.5
 Dummy_5|Student_5|12|female|Dummy_Login_5|Trig/Pre-Calc|13
-Maria|Mendiburo|12|female|mariamendiburo@gmail.com|Trig/Pre-Calc|13
