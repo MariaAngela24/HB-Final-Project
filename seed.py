@@ -166,12 +166,13 @@ def load_questions():
 
     for i, row in enumerate(open("seed_data/u.question.txt")):
         row = row.rstrip()
-        measure_id, objective_id, prompt, flag, question_type = row.split("|")
+        measure_id, objective_id, prompt, flag, question_type, position = row.split("|")
         question = Question(measure_id=measure_id, 
                             objective_id=objective_id,
                             prompt=prompt,
                             flag=flag,
-                            question_type=question_type) 
+                            question_type=question_type,
+                            position=position) 
                         
         db.session.add(question)
         db.session.commit()
@@ -185,9 +186,10 @@ def load_answers_choices():
 
     for i, row in enumerate(open("seed_data/u.answer_choice.txt")):
         row = row.rstrip()
-        text, value = row.split("|")
+        text, value, position = row.split("|")
         answer_choice = AnswerChoice(text=text,
-                                    value=value) 
+                                    value=value,
+                                    position=position) 
                         
         db.session.add(answer_choice)
         db.session.commit()

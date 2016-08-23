@@ -7,6 +7,12 @@
 
     <div>
         <label>
+            <!-- for question in questions: -->
+            <ol>
+            {% for question in q_list %}
+                <li> {{ question.prompt }} </li>
+            {% endfor % }
+            </ol>
             <!-- Need to find a way to make the radio button questions required -->
             Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them. <br>
             <input type="radio" name="lecture-and-notes" value="1"> 1 - HELP! These make no sense.  <br>

@@ -1,18 +1,18 @@
-1|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale
-1|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response
-1|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale
-1|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response
-1|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale
-1|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response
-2|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale
-2|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response
-2|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale
-2|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response
-2|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale
-2|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response
-3|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale
-3|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response
-3|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale
-3|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response
-3|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale
-3|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response
+1|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale|1
+1|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response|2
+1|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale|3
+1|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response|4
+1|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale|5
+1|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response|6
+2|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale|1
+2|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response|2
+2|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale|3
+2|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response|4
+2|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale|5
+2|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response|6
+3|1|Look back at today's LECTURE HANDOUT and any NOTES that you wrote down during class. Rate how well you understand them.|end of class survey|Likert scale|1
+3|1|In the space below, record any KEY WORDS or CONCEPTS that you need to revisit.|end of class survey|Free response|2
+3|1|How well did you understand the PROBLEMS you completed during GROUPWORK?|end of class survey|Likert scale|3
+3|1|Use the space below to record the number(s) of any problem(s) you need to revisit.|end of class survey|Free response|4
+3|1|Overall, how would you rate your understanding of today's learning objective?|end of class survey|Likert scale|5
+3|1|Use the space below to record any questions or thoughts that you want to remember to ask your instructor or another student.|end of class survey|Free response|6

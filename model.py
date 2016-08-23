@@ -235,7 +235,8 @@ class AnswerChoice(db.Model):
     text = db.Column(db.String(150), nullable=True)
     #QUESTION: Do I need to make any additional specifications?
     value = db.Column(db.Integer, nullable=True)
-    
+    position = db.Column(db.Integer, nullable=True)
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -259,6 +260,7 @@ class Question(db.Model):
     #This variable indicates multiple choice, free response, etc
     question_type = db.Column(db.String(25), nullable=True)
     correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'), nullable=True)
+    position = db.Column(db.Integer, nullable=True)
 
 
     answer_choices = db.relationship("AnswerChoice", 
