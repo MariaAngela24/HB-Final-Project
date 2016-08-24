@@ -115,26 +115,14 @@ def index():
 def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
 
+    #TO DO: Account for case when there is more than one measure in a session
+    session["measure_id"] = measure_id
     student_id = session["student_id"]
     q_list = Question.query.filter_by(measure_id=measure_id).all()
     print  q_list
    
 
-    #TO DO : Get measure -object
-
-    #TO DO: Grab measure_id, grab all questions associated with that measure_id, grab all answer choices associated with questions
-    #TO DO: Add survey= when I figure out Jinja
-
-    #measure_id = Measure.query.filter_by(class_id=, sent_time)
-    #dictionary(list?) of question objects = 
-    #questions=Question.query.filter_by(measure_id=measure_id)
-    #for question in questions:
-        #
-    #unpack list of questions
-    #create list of question id's from list
-    #for question in list_of_questions:
-    #return answer choices as keys
-
+    
     return render_template("end-of-class-survey.html", q_list=q_list)
        #TO DO , Send measure _object in above line of code)
         
