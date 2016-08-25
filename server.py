@@ -118,7 +118,12 @@ def end_of_class_survey_form(measure_id):
     #TO DO: Account for case when there is more than one measure in a session
     session["measure_id"] = measure_id
     student_id = session["student_id"]
+    student_measure_object = StudentMeasure.query.filter_by(student_id=student_id, measure_id=measure_id).first()
+    student_measure_id = student_measure_object.student_measure_id
+    print "student_measure_id=", student_measure_id
+    #session["student_measure_id"] = student_measure_id
     q_list = Question.query.filter_by(measure_id=measure_id).all()
+    #session["q_list"] = q_list
     print  q_list
    
 
@@ -133,6 +138,7 @@ def survey_process(measure_id):
     """Process responses from survey"""
 
     # Get form variables
+    #ajax demo line 7-19 in js file, ajax demo server file
     lecture_notes_rating = request.form.get("lecture-and-notes")
     key_words = request.form.get("key-words")
     group_problems_rating = request.form.get("group-problems")

@@ -1,9 +1,11 @@
+<!-- TO DO: Change name from end of class survey to surveys -->
 {% extends 'base.html' %}
 {% block content %}
+<script src="/static/js/surveys.js"></script>
 
 <h2>Today's Learning Objective: TO DO</h2>
 
-<form action="end-of-class-survey/" method="POST">
+<form id="survey" action="end-of-class-survey/" method="POST">
 
     <div>
         <label>
@@ -13,12 +15,12 @@
                     <li> {{ question.prompt }} </li>
                         <ul>
                             {% for choice in question.answer_choices %}  
-                            <li><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}
+                                <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
                             {% endfor %}
                         </ul>
                 {% endif %}
                 {% if question.question_type == "Free response" %} 
-                    <li> {{ question.prompt }} </li>
+                    <li class="responses"> {{ question.prompt }} </li>
                     <input type="textarea" name=  "{{ question.question_id }}">
                 {% endif %}
             {% endfor %}
