@@ -8,6 +8,8 @@
 "use strict";
 // Creating a string of the question id's and responses that can be used for an AJAX request
 data = $("#survey").serialize()
+$.post("/")
+print data
 //put off success function until data is posting successfully 
 // $.post(route, data, success)
 // https://api.jquery.com/jQuery.post/
