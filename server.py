@@ -136,8 +136,10 @@ def end_of_class_survey_form(measure_id):
 
 
 # @app.route('/end-of-class-survey/', methods=['POST'])
-# def survey_process(measure_id):
+# def survey_process(student_measure_id):
 #     """Process responses from survey"""
+
+#     response_object = request.form.get
 
     # Get form variables
     #ajax demo line 7-19 in js file, ajax demo server file

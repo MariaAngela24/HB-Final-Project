@@ -155,10 +155,10 @@ class Response(db.Model):
     response = db.Column(db.String(500), nullable=True)
 
 
-def __repr__(self):
-        """Provide helpful representation when printed."""
+    def __repr__(self):
+            """Provide helpful representation when printed."""
 
-        return "<Response reasponse_id=%s student_measure_id=%s response=%s" % (self.response_id, self.student_measure_id, self.response_id, self.student_id)
+            return "<Response reasponse_id=%s student_measure_id=%s response=%s" % (self.response_id, self.student_measure_id, self.response_id, self.student_id)
 
 
 
@@ -300,14 +300,43 @@ class QuestionAnswerChoice(db.Model):
 ##############################################################################
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///system'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///system'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 #    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
+
+
+
+def example_data():
+    """Create some sample data."""
+
+    subject = Subject(name='Subject 1')
+
+    db.session.add(subject)
+    db.session.commit()
+
+    objective = Objective(name='Regression')
+    student = Student(username='johnsmith')
+    class_row = Class(subject_id=1)
+
+    db.session.add_all([objective, student, class_row])
+    db.session.commit()
+
+    measure = Measure(class_id=1)
+
+    db.session.add(measure)
+    db.session.commit()
+
+    q1 = Question(measure_id='1', objective_id=1, prompt="Question 1")
+    q2 = Question(measure_id='1', objective_id=1, prompt="Question 2")
+    q3 = Question(measure_id='1', objective_id=1, prompt="Question 3")
+     
+    db.session.add_all([q1, q2, q3])
+    db.session.commit()
 
 
 if __name__ == "__main__":
