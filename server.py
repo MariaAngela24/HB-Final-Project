@@ -135,42 +135,24 @@ def end_of_class_survey_form(measure_id):
         
 
 
-# @app.route('/end-of-class-survey/', methods=['POST'])
-# def survey_process(student_measure_id):
-#     """Process responses from survey"""
+@app.route('/end-of-class-survey/', methods=['POST'])
+def survey_process(student_measure_id):
+    """Process responses from survey"""
 
-#     response_object = request.form.get
+    response_object = request.form.get()#This should be the question.question_id Jinja variable)
 
-    # Get form variables
-    #ajax demo line 7-19 in js file, ajax demo server file
-    # lecture_notes_rating = request.form.get("lecture-and-notes")
-    # key_words = request.form.get("key-words")
-    # group_problems_rating = request.form.get("group-problems")
-    # problems_to_revisit = request.form.get("problems-to-revisit")
-    # overall_rating = request.form.get("overall")
-    # questions = request.form.get("questions")
+    for key in response_object:
+        #TO DO: how do I get this to call the right values for student_measure_id, which is the hidden value
+        #for the whole form, and question_id, which is different for every question?
+        response = Response(student_measure_id=student_measure_id, question_id=question_id)
+        db.session.add(response)
+    db.session.commit()
+
     
 
-    # #QUESTION & TO DO: Each new response and each new question should be unique id's.  How do I code this as a variable?
-    # response_1  = Response(response=lecture_notes_rating, student_measure_id=students_measures.student_measure_id, question_id=1)
-    # response_2  = Response(response=key_words, student_measure_id=students_measures.student_measure_id, question_id=2)
-    # response_3  = Response(response=group_problems_rating, student_measure_id=students_measures.student_measure_id, question_id=3)
-    # response_4  = Response(response=problems-to-revisit, student_measure_id=students_measures.student_measure_id, question_id=4)
-    # response_5  = Response(response=overall_rating, student_measure_id=students_measures.student_measure_id, question_id=5)
-    # response_6  = Response(response=questions, student_measure_id=students_measures.student_measure_id, question_id=6)
 
-    # #TO DO: Change this to a loop 
-    # db.session.add(response_1)
-    # db.session.add(response_2)
-    # db.session.add(response_3)
-    # db.session.add(response_4)
-    # db.session.add(response_5)
-    # db.session.add(response_6)
-
-
-    # db.session.commit()
-
-    # return render_template("survey-acknowledgement.html")
+    
+    return render_template("survey-acknowledgement.html")
 
 # Need to make separate routes for teacher login and student login
 
