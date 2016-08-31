@@ -158,7 +158,7 @@ class Response(db.Model):
     def __repr__(self):
             """Provide helpful representation when printed."""
 
-            return "<Response reasponse_id=%s student_measure_id=%s response=%s" % (self.response_id, self.student_measure_id, self.response_id, self.student_id)
+            return "<Response response_id=%s student_measure_id=%s response=%s" % (self.response_id, self.student_measure_id, self.response)
 
 
 

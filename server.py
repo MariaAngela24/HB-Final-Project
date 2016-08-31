@@ -133,6 +133,8 @@ def end_of_class_survey_form(measure_id):
 def survey_process():
     """Process responses from survey"""
 
+    print request.form
+
     #Pulls measure_id out of session
     measure_id = session["measure_id"] 
     #This get requests grabs value for student_measure_id that was hidden in the form
@@ -148,22 +150,21 @@ def survey_process():
         question_ids.append(question_id)
     print question_ids
 
-    #TO DO: This is for debugging only - delete
-    student_response = request.form.get("1")
-    print student_response
+    
+    
 
     #I think this needs to be a dictionary with question_id as key and response as value
-    # student_responses = []
+    
     i = 0
     for item in question_ids:
         question_id = question_ids[i]
         print "question_id=", question_id
-        student_response = request.form.get("question_id")
-        print student_response
+        #str() function is used inside get request because question_id's that are used as names on form are stored as strings 
+        response_text_or_value = request.form.get(str(question_id))
+        response_row = Response(response=response_text_or_value, student_measure_id=student_measure_id, question_id=question_id)
         i = i + 1
-        # print statements indicate that the correct value for question id is being pulled from
-        # list, but the get request is returning "None" 
-        # student_responses.append(student_response)
+        db.session.add(response_row)
+    db.session.commit()
 
     # print student_responses
 
