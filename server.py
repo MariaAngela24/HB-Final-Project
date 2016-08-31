@@ -30,10 +30,6 @@ app.debug = DEBUG
 app.secret_key = SECRET_KEY
 oauth = OAuth()
 
-
-
-# TO DO: Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
 
@@ -56,6 +52,7 @@ google = oauth.remote_app('google',
 def index():
     """Show Student Homepage."""
 
+    #Next 5 blocks of code are for Google OAuth 
     access_token = session.get('access_token')
     if access_token is None:
         return redirect(url_for('login'))
@@ -80,27 +77,22 @@ def index():
     user_info_dict = json.loads(user_info)
     
     #Use to view user info returned by Google OAuth
-    print type(user_info_dict)
-    print user_info_dict
+    #print type(user_info_dict)
+    #print user_info_dict
     
-    #Grabbing email address returned by Google OAuth (Dictionary returned from Google OAuth is called user_info)
-    #Changing this to email=user_info.get("email", None) would allow me to set None as the default.  
-    #That may be useful when setting up case for creating new accounts 
+    #Grabbing email address returned by Google OAuth. Note: Dictionary returned from Google OAuth is called user_info
+    #(Changing this to email=user_info.get("email", None) would allow me to set None as the default. 
+        #That may be useful when setting up case for creating new accounts) 
     email=user_info_dict["email"]
-    print email
     #Using email address returned by Google OAuth to query for student_id and storing student_id in web session
     student_object = Student.query.filter_by(username=email).first()
-    print student_object
     student_id = student_object.student_id
-    print student_id
     student_class_object = StudentClass.query.filter_by(student_id=student_id).first()
-    print student_class_object
     class_id = student_class_object.class_id
-    print class_id
 
     session["student_id"] = student_id
     session["class_id"] = class_id
-    print session
+   
     
     #TO DO: Jinja needs to be added in the else statement to enable student to see
     #their personal data
@@ -116,37 +108,73 @@ def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
 
     #TO DO: Account for case when there is more than one measure in a session
+    #Measure id was hard coded in button on homepage that links to this route. This captures the 
+    #Measure id and stored it in the session
     session["measure_id"] = measure_id
+    #Rebinds the variable name "student"id" to the student_id stored in the session
     student_id = session["student_id"]
     #TO DO: Allow new student measure objects to be created here when I am no
     #long repeatedly answering the same measure
     student_measure_object = StudentMeasure.query.filter_by(student_id=student_id, measure_id=measure_id).first()
     student_measure_id = student_measure_object.student_measure_id
-    print "student_measure_id=", student_measure_id
-    #session["student_measure_id"] = student_measure_id
+    
+    #Queries database for all questions tagged with specified measure_id. Returns a list of objects 
     q_list = Question.query.filter_by(measure_id=measure_id).all()
-    #session["q_list"] = q_list
-    print  q_list
+  
    
 
-    
+    #Renders survey form, passes list of question objects and student measure id to form
     return render_template("end-of-class-survey.html", q_list=q_list, student_measure_id=student_measure_id)
        #TO DO , Send measure _object in above line of code)
         
 
 
 @app.route('/end-of-class-survey/', methods=['POST'])
-def survey_process(student_measure_id):
+def survey_process():
     """Process responses from survey"""
 
-    response_object = request.form.get()#This should be the question.question_id Jinja variable)
+    #Pulls measure_id out of session
+    measure_id = session["measure_id"] 
+    #This get requests grabs value for student_measure_id that was hidden in the form
+    student_measure_id = request.form.get("student_measure_id")
+    print student_measure_id
+    
+    #Names of inputs on survey form are the question id's. Next block of code uses measure id to query database
+    #for the list of questions in the form and then creates a list of the question id's used to render survey form
+    q_list = Question.query.filter_by(measure_id=measure_id).all()
+    question_ids = []
+    for question in q_list:
+        question_id = question.question_id
+        question_ids.append(question_id)
+    print question_ids
 
-    for key in response_object:
-        #TO DO: how do I get this to call the right values for student_measure_id, which is the hidden value
-        #for the whole form, and question_id, which is different for every question?
-        response = Response(student_measure_id=student_measure_id, question_id=question_id)
-        db.session.add(response)
-    db.session.commit()
+    #TO DO: This is for debugging only - delete
+    student_response = request.form.get("1")
+    print student_response
+
+    #I think this needs to be a dictionary with question_id as key and response as value
+    # student_responses = []
+    i = 0
+    for item in question_ids:
+        question_id = question_ids[i]
+        print "question_id=", question_id
+        student_response = request.form.get("question_id")
+        print student_response
+        i = i + 1
+        # print statements indicate that the correct value for question id is being pulled from
+        # list, but the get request is returning "None" 
+        # student_responses.append(student_response)
+
+    # print student_responses
+
+    # for student_reponse in student_responses:
+    #     response_object = Response(student_measure_id=student_measure_id, )
+
+    # response = Response(student_measure_id=student_measure_id)
+    # db.session.add(response)
+    # db.session.commit()
+
+  
 
     
 
