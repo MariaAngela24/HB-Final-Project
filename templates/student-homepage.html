@@ -3,9 +3,55 @@
 
   <h1>Map My Learning</h1>
 
-  <h2>Student Homepage</h2>
-  <!-- The 1 below needs to change to a Jinja variable when there is more than one measure per class -->
-  <p><a href="/end-of-class-survey/1">Go to End of Class Survey</a></p>
+  <h2>Alliant 2210 - Introduction to Statistics</h2>
+
+  <div class="melon-chart">
+    <canvas id="lineChart"></canvas>
+    <div id="lineLegend" class="chart-legend"></div>
+  </div>
+
+  <div class="melon-chart">
+    <canvas id="donutChart"></canvas>
+    <div id="donutLegend" class="chart-legend"></div>
+  </div>
 
   
+
+  <script>
+    var options = {
+      responsive: true
+    };
+
+    // Make Donut Chart of percent of different types of Melons
+    var ctx_donut = $("#donutChart").get(0).getContext("2d");
+
+    $.get("/melon-types.json", function (data) {
+      var myDonutChart = new Chart(ctx_donut, {
+                                              type: 'doughnut',
+                                              data: data,
+                                              options: options
+                                            });
+      $('#donutLegend').html(myDonutChart.generateLegend());
+    });
+
+    // Make Line Chart of Melon Sales over time
+    var ctx_line = $("#lineChart").get(0).getContext("2d");
+
+    $.get("/melon-times.json", function (data) {
+      var myLineChart = Chart.Line(ctx_line, {
+                                    data: data,
+                                    options: options
+                                });
+      $("#lineLegend").html(myLineChart.generateLegend());
+    });
+
+  </script>
+
+  <!-- The "1" below needs to change to a Jinja variable when there is more than one measure per class -->
+  <p><a href="/end-of-class-survey/1">Begin End of Class Survey</a></p>
+  <p><a href="/homework_survey/4">Begin Homework Survey</a></p>
+  <p><a href="/assessment/">Begin Exit Ticket</a></p>
+
+
+    
 {% endblock %}

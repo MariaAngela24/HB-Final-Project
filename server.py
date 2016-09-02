@@ -3,7 +3,7 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 #Had to pip install flask_debug_toolbar to get this to run.  
 from flask import url_for
 from flask_oauth import OAuth
@@ -92,12 +92,99 @@ def index():
 
     session["student_id"] = student_id
     session["class_id"] = class_id
-   
-    
-    #TO DO: Jinja needs to be added in the else statement to enable student to see
-    #their personal data
+
 
     return render_template("student-homepage.html")
+
+
+# @app.route("/map-data.json")
+# def map_data():
+#     """Return student measure data"""
+
+#     # objectives_objects = Objective.query.all()
+#     # print objectives_objects
+
+#     @app.route('/melon-times.json')
+@app.route('/melon-types.json')
+def melon_types_data():
+    """Return data about Melon Sales."""
+
+    data_dict = {
+                "labels": [
+                    "1-2",
+                    "3",
+                    "4-5"
+                ],
+                "datasets": [
+                    {
+                        "data": [12, 4, 6],
+                        "backgroundColor": [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56"
+                        ],
+                        "hoverBackgroundColor": [
+                            "#FF6384",
+                            "#36A2EB",
+                            "#FFCE56"
+                        ]
+                    }]
+            }
+
+    return jsonify(data_dict)
+
+
+@app.route('/melon-times.json')
+def melon_times_data():
+    """Return time series data of Melon Sales."""
+
+    data_dict = {
+        "labels": ["1.1", "2.2", "2.3", "2.4", "2.5", "2.6", "3."],
+        "datasets": [
+            {
+                "label": "Watermelon",
+                "fill": True,
+                "lineTension": 0.5,
+                "backgroundColor": "rgba(220,220,220,0.2)",
+                "borderColor": "rgba(220,220,220,1)",
+                "borderCapStyle": 'butt',
+                "borderDash": [],
+                "borderDashOffset": 0.0,
+                "borderJoinStyle": 'miter',
+                "pointBorderColor": "rgba(220,220,220,1)",
+                "pointBackgroundColor": "#fff",
+                "pointBorderWidth": 1,
+                "pointHoverRadius": 5,
+                "pointHoverBackgroundColor": "#fff",
+                "pointHoverBorderColor": "rgba(220,220,220,1)",
+                "pointHoverBorderWidth": 2,
+                "pointRadius": 3,
+                "pointHitRadius": 10,
+                "data": [65, 59, 80, 81, 56, 55, 40],
+                "spanGaps": False},
+            {
+                "label": "Cantaloupe",
+                "fill": True,
+                "lineTension": 0.5,
+                "backgroundColor": "rgba(151,187,205,0.2)",
+                "borderColor": "rgba(151,187,205,1)",
+                "borderCapStyle": 'butt',
+                "borderDash": [],
+                "borderDashOffset": 0.0,
+                "borderJoinStyle": 'miter',
+                "pointBorderColor": "rgba(151,187,205,1)",
+                "pointBackgroundColor": "#fff",
+                "pointBorderWidth": 1,
+                "pointHoverRadius": 5,
+                "pointHoverBackgroundColor": "#fff",
+                "pointHoverBorderColor": "rgba(151,187,205,1)",
+                "pointHoverBorderWidth": 2,
+                "pointHitRadius": 10,
+                "data": [28, 48, 40, 19, 86, 27, 90],
+                "spanGaps": False}
+        ]
+    }
+    return jsonify(data_dict)
 
     #TO DO: Add a page for students to choose from a list of classes (query StudentClass table for all rows with matching student_id)
 
@@ -148,40 +235,48 @@ def survey_process():
     for question in q_list:
         question_id = question.question_id
         question_ids.append(question_id)
-    print question_ids
-
-    
-    
-
-    #I think this needs to be a dictionary with question_id as key and response as value
     
     i = 0
     for item in question_ids:
+        #For each item in q_list, bind the name question_id to the value of the item
         question_id = question_ids[i]
-        print "question_id=", question_id
         #str() function is used inside get request because question_id's that are used as names on form are stored as strings 
         response_text_or_value = request.form.get(str(question_id))
+        #Create a new response row and add it to the database
         response_row = Response(response=response_text_or_value, student_measure_id=student_measure_id, question_id=question_id)
-        i = i + 1
         db.session.add(response_row)
-    db.session.commit()
-
-    # print student_responses
-
-    # for student_reponse in student_responses:
-    #     response_object = Response(student_measure_id=student_measure_id, )
-
-    # response = Response(student_measure_id=student_measure_id)
-    # db.session.add(response)
-    # db.session.commit()
-
+        i = i + 1
+        
+    db.session.commit()  
   
-
-    
-
-
-    
     return render_template("survey-acknowledgement.html")
+
+
+
+# @app.route('/melon-types.json')
+# def melon_types_data():
+#     """Return data about Melon Sales."""
+
+#     data_dict = {
+#                 "labels": [
+#                     "Christmas Melon",
+#                     "Crenshaw",
+#                 ],
+#                 "datasets": [
+#                     {
+#                         "data": [300, 50],
+#                         "backgroundColor": [
+#                             "#FF6384",
+#                             "#36A2EB",
+#                         ],
+#                         "hoverBackgroundColor": [
+#                             "#FF6384",
+#                             "#36A2EB",
+#                         ]
+#                     }]
+#             }
+
+    return jsonify(data_dict)
 
 # Need to make separate routes for teacher login and student login
 
@@ -209,7 +304,6 @@ def get_access_token():
 
 
 
-# Ask instructors for good login/logout code
 # @app.route('/logout')
 # def logout():
 #     """Log out."""

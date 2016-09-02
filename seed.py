@@ -148,11 +148,13 @@ def load_objectives():
 
     print "Objectives"
 
-    for i, row in enumerate(open("seed_data/u.objective.txt")):
+    for i, row in enumerate(open("seed_data/u.objective.tsv")):
         row = row.rstrip()
-        name, description = row.split("|")
-        objective = Objective(name=name,
-                            description=description)
+        objective_number, name, description, class_id = row.split("\t")
+        objective = Objective(objective_number=objective_number,
+                            name=name,
+                            description=description,
+                            class_id=class_id)
                                               
         db.session.add(objective)
         db.session.commit()

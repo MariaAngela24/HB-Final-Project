@@ -208,14 +208,19 @@ class Subject(db.Model):
 
         return "<Subject subject_id=%s name=%s" % (self.subject_id, self.name)
 
+#TO DO: Need to account for many to many relationship between objectives and questions. Also need
+#to account for many to many relationship between objectives and classes
 class Objective(db.Model):
     """Learning objectives"""
 
     __tablename__ = "objectives"
 
     objective_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    objective_number = db.Column(db.Float, nullable=True)
     name = db.Column(db.String(64), nullable=True)
-    description = db.Column(db.String(200), nullable=True)
+    description = db.Column(db.String(500), nullable=True)
+    class_id = db.Column(db.Integer, db.ForeignKey('classes.class_id'))
+
 
 
     def __repr__(self):
@@ -315,26 +320,26 @@ def example_data():
     """Create some sample data."""
 
     subject = Subject(name='Subject 1')
-
     db.session.add(subject)
     db.session.commit()
 
     objective = Objective(name='Regression')
     student = Student(username='johnsmith')
     class_row = Class(subject_id=1)
-
     db.session.add_all([objective, student, class_row])
     db.session.commit()
 
     measure = Measure(class_id=1)
-
     db.session.add(measure)
     db.session.commit()
 
-    q1 = Question(measure_id='1', objective_id=1, prompt="Question 1")
-    q2 = Question(measure_id='1', objective_id=1, prompt="Question 2")
-    q3 = Question(measure_id='1', objective_id=1, prompt="Question 3")
-     
+    student_measure = StudentMeasure(student_id=1, measure_id=1)
+    db.session.add(student_measure)
+    db.session.commit
+
+    q1 = Question(measure_id=1, objective_id=1, prompt="Question 1")
+    q2 = Question(measure_id=1, objective_id=1, prompt="Question 2")
+    q3 = Question(measure_id=1, objective_id=1, prompt="Question 3")
     db.session.add_all([q1, q2, q3])
     db.session.commit()
 

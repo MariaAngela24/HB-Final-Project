@@ -15,8 +15,8 @@ class SurveyRenderTestCase(unittest.TestCase):
         self.client = app.test_client()
 
         with self.client as c:
-            with c.session_transaction() as sess:
-                sess['student_id'] = 1
+            with c.session_transaction() as session:
+                session['student_id'] = 1
 
         # Connect to test database
         connect_to_db(app, "postgresql:///testdb")
@@ -35,9 +35,7 @@ class SurveyRenderTestCase(unittest.TestCase):
         """Testing that the survey page renders correct HTML template"""
 
 
-        client = app.test_client()
-        app.config['TESTING'] = True
-        result = client.get("end-of-class-survey/1")
+        result = self.client.get("/end-of-class-survey/1")
         self.assertIn('<title>Map My Learning</title>', result.data)
 
 

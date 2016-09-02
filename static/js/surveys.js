@@ -14,3 +14,6 @@
 // // $.post(route, data, success)
 // https://api.jquery.com/jQuery.post/
 // render thanks for submitting and then return to homepage
+
+// Query with student id (AJAX call)
+
