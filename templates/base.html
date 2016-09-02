@@ -1,7 +1,11 @@
 <!doctype html>
 <html>
 <head>
+    <h1>Map My Learning</h1>
+
+    <h2>Alliant 2210 - Introduction to Statistics</h2>
     <title>Map My Learning</title>
+    
     <!-- Style -->
     <link href="/static/style.css" rel="stylesheet"></link>
     <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
@@ -10,7 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
 </head>
 <body>
-    {% block content %}
+{% block content %}
+    
     
 {% if "user_id" in session %}
     <a href="/logout">Logout</a>
@@ -27,6 +32,10 @@
 
     Put your body here.
 {% endblock %}
+<p><a href="/end-of-class-survey/1">Begin End of Class Survey</a></p>
+<p><a href="/end-of-class-survey/4">Begin Homework Survey</a></p>
+<p><a href="/">Go to My Learning Map</a></p>
+<p><a href="/study-notes/">Go to My Study Notes</a></p>
 
 </body>
 </html>

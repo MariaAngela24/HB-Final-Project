@@ -154,6 +154,8 @@ class Response(db.Model):
     #QUESTION: Is this a good character limit for a text field?
     response = db.Column(db.String(500), nullable=True)
 
+    # TO DO: decide if I need to define relationship to any other tables
+
 
     def __repr__(self):
             """Provide helpful representation when printed."""
