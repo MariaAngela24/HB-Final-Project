@@ -3,7 +3,7 @@
 {% block content %}
 <!-- <script src="/static/js/surveys.js"></script> -->
 
-<h2>Learning Objective: TO DO</h2>
+<h2> {{ measure_object.flag }} </h2>
 
 <form id="survey" action="/end-of-class-survey/" method="POST">
     <!-- TO DO: Check the open/close relationship for all these tags -->
@@ -19,7 +19,17 @@
                             {% endfor %}
                         </ul>
                 {% endif %}
-                {% if question.question_type == "Free response" %} 
+
+                {% if question.question_type == "percent" %} 
+                    <li> {{ question.prompt }} </li>
+                        <ul>
+                            {% for choice in question.answer_choices %}  
+                                <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
+                            {% endfor %}
+                        </ul>
+                {% endif %}
+
+                {% if question.question_type == "free response" %} 
                     <li class="responses"> {{ question.prompt }} </li>
                     <input type="textarea" name=  "{{ question.question_id }}">
                 {% endif %}

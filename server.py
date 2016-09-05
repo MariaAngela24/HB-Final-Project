@@ -114,27 +114,42 @@ def index():
 def average_objective_self_rating():
     """Returns an average of all self-ratings for each objective."""
 
+    #Rebind student_id and class_id to values in session
     student_id = session["student_id"]
     class_id = session["class_id"]
+    #Get list of all objective objects
     objective_list = Objective.query.filter_by(class_id=class_id).all()
+    #Create list of just objective numbers from objective object
     objective_numbers = []
     for objective in objective_list:
         objective_number = objective.objective_number
         objective_numbers.append(objective_number)
-    print objective_numbers
 
-    questions_dictionary = {}
+    objective_ids = []
     for objective in objective_list:
-        questions = Question.query.filter_by(objective_id=objective.objective_id).all()
-        print questions
+        objective_id = objective.objective_id
+        objective_ids.append(objective_id)
+    print objective_ids
 
-    #session["objective_list"] = objective_list
 
-#db.session.query(Question.question_id, Response.response).filter(Question.question_type=="Likert scale", Question.objective_id==objective_id, StudentMeasure.student_id==1).join(Response).join(StudentMeasure).all()
-#[(4, u'3'), (6, u'3'), (8, u'3'), (10, u'4')]
+    #Create a list of tuples that contains objective_id and response for all questions answered by student
+    response_tuples = db.session.query(Question.objective_id, Response.response).filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).join(Response).join(StudentMeasure).all()
+    print response_tuples
+    
+    response_dictionary = dict(response_tuples)
+
+    print response_dictionary
+    response_data = []
+    for item in objective_ids:
+        response_value = response_dictionary.get(item)
+        print "response_value=", response_value
+        response_data.append(response_value)
+        print "response_data=", response_data
+
+    #TO DO: Find a way to add additional values to dictionary if key already exists.  Average all values
+    #Can use sum in math function and divide by length
    
-    #TO DO: Make Objective numbers dynamic from list in objective_numbers
-    # data_object = Response.query.filter_by(student_id=student_id).all()
+    
     data_dict = {
         "labels": objective_numbers,
         "datasets": [
@@ -157,7 +172,7 @@ def average_objective_self_rating():
                 "pointHoverBorderWidth": 2,
                 "pointRadius": 3,
                 "pointHitRadius": 10,
-                "data": [2.4, 3.9, 4.8, 4.2, 2.0],
+                "data": response_data,
                 "spanGaps": False},
             
         ]
@@ -206,6 +221,7 @@ def end_of_class_survey_form(measure_id):
     #Measure id was hard coded in button on homepage that links to this route. This captures the 
     #Measure id and stored it in the session
     session["measure_id"] = measure_id
+    measure_object = Measure.query.filter_by(measure_id=measure_id).first()
     #Rebinds the variable name "student"id" to the student_id stored in the session
     student_id = session["student_id"]
     #TO DO: Allow new student measure objects to be created here when I am no
@@ -219,7 +235,7 @@ def end_of_class_survey_form(measure_id):
    
 
     #Renders survey form, passes list of question objects and student measure id to form
-    return render_template("end-of-class-survey.html", q_list=q_list, student_measure_id=student_measure_id)
+    return render_template("end-of-class-survey.html", q_list=q_list, student_measure_id=student_measure_id, measure_object=measure_object)
        #TO DO , Send measure _object in above line of code)
         
 
