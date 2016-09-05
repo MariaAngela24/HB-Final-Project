@@ -1,41 +1,52 @@
 <!doctype html>
 <html>
-<head>
-    <h1>Map My Learning</h1>
+    <head>
+        <h1>Map My Learning</h1>
 
-    <h2>Alliant 2210 - Introduction to Statistics</h2>
-    <title>Map My Learning</title>
-    
-    <!-- Style -->
-    <link href="/static/style.css" rel="stylesheet"></link>
-    <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
-    <!-- Javascript imports -->
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
-</head>
-<body>
-{% block content %}
-    
-    
-{% if "user_id" in session %}
-    <a href="/logout">Logout</a>
-{% else %}
-    <a href="/login">Login</a>
-{% endif %}
+        <h2>Alliant 2210 - Introduction to Statistics</h2>
+        <title>Map My Learning</title>
+        
+        <!-- Style -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/style.css" rel="stylesheet"></link>
+        <!-- TO DO: Investigate line of code below (found in chart.js lecture) -->
+        <!-- <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css"> -->
+        <!-- Javascript imports -->
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
+    </head>
+    <body>
+    {% block content %}
+        
+    <!-- TO DO: Complete login in and logout routes using code below -->
+    <!--  {% if "user_id" in session %}
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login</a>
+    {% endif %} -->
 
-<hr>
+    <!-- TO DO: Decide if I want to use flashed messages for any incorrect  user actions -->
+    <!-- {% for flash in get_flashed_messages() %}
+      {{ flash }}
+    {% endfor %} -->
 
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
+        Put your body here.
+        <body>
+          <div class="container-fluid"> NAVBAR HERE </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12"> MAIN CONTENT HERE </div>
+            </div>
+          </div>
+        </body>
 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    Put your body here.
-{% endblock %}
-<p><a href="/end-of-class-survey/1">Begin Homework Survey</a></p>
-<p><a href="/end-of-class-survey/2">Begin End of Class Survey</a></p>
-<p><a href="/">Go to My Learning Map</a></p>
-<p><a href="/study-notes/">Go to My Study Notes</a></p>
+    {% endblock %}
+    <p><a href="/end-of-class-survey/1">Begin Homework Survey</a></p>
+    <p><a href="/end-of-class-survey/2">Begin End of Class Survey</a></p>
+    <p><a href="/">Go to My Learning Map</a></p>
+    <p><a href="/study-notes/">Go to My Study Notes</a></p>
 
-</body>
+    </body>
 </html>
