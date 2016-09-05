@@ -1,0 +1,6 @@
+SELECT 
+    PAVG(cast::integer(responses.response))
+FROM responses 
+    JOIN questions ON responses.question_id = questions.id AND questions.objective_id = $objective_id AND q.type = ?
+    JOIN student_measures ON student_measures.response_id = responses.id AND student_measure.student_id = $student_id
+;

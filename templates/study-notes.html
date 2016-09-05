@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>My Study Notes</h2>
+
+    {% for objective in objective_list %}
+        <h3> {{ objective.objective_number }}: {{ objective.name }} </h3>
+        <h4>Description: {{ objective.description }} </h4>
+        <div>
+        <h4> Reading Self-Assessment: </h5>
+            <p>Reading Completed:</p>
+
+    {% endfor %}
+                
+    
+        
+
+{% endblock %}
