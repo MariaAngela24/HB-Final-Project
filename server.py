@@ -130,6 +130,8 @@ def average_objective_self_rating():
 
     #session["objective_list"] = objective_list
 
+#db.session.query(Question.question_id, Response.response).filter(Question.question_type=="Likert scale", Question.objective_id==objective_id, StudentMeasure.student_id==1).join(Response).join(StudentMeasure).all()
+#[(4, u'3'), (6, u'3'), (8, u'3'), (10, u'4')]
    
     #TO DO: Make Objective numbers dynamic from list in objective_numbers
     # data_object = Response.query.filter_by(student_id=student_id).all()
