@@ -173,11 +173,10 @@ class Measure(db.Model):
     class_id = db.Column(db.Integer, db.ForeignKey('classes.class_id'))
     #The variable below indicates the type of measure, such as homework survey
     #end of class survey, or quiz
-    flag = db.Column(db.String(64), nullable=True)
-    #This is a timestamp for when the measure was administered.  
-    #QUESTION: Do I need when it closed as a variable in this database or do I control for it on the flask side?
+    flag = db.Column(db.String(64), nullable=True)  
     #TO DO: Add correct datetime syntax to variable below
     #sent_time = db.Column(db Datetime????) 
+    #QUESTION: Should I add when it closed as a variable in this database or do I control for it on the flask side?
     #The variable below tracks whether measure has never been opened, is open and waiting
     #for responses, or is closed
     status = db.Column(db.String(20), nullable=True)
@@ -190,7 +189,7 @@ class Measure(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Measure measure_id=%s class_id=%s sent_time=%s>" % (self.measure_id, self.class_id, self.sent_time)
+        return "<Measure measure_id=%s class_id=%s>" % (self.measure_id, self.class_id)
 
 
 
@@ -241,7 +240,7 @@ class AnswerChoice(db.Model):
     #QUESTION: What should I do for other answer choice types, such as images?
     text = db.Column(db.String(150), nullable=True)
     #QUESTION: Do I need to make any additional specifications?
-    value = db.Column(db.Integer, nullable=True)
+    value = db.Column(db.Float, nullable=True)
     position = db.Column(db.Integer, nullable=True)
 
 
@@ -263,16 +262,28 @@ class Question(db.Model):
     prompt = db.Column(db.String(500), nullable=False)
     #This variable is used to indicate questions that are part of the standard set for 
     #certain measures
-    flag = db.Column(db.String(25), nullable=True)
+    measure_type = db.Column(db.String(50), nullable=True)
     #This variable indicates multiple choice, free response, etc
-    question_type = db.Column(db.String(25), nullable=True)
-    correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'), nullable=True)
+    question_type = db.Column(db.String(50), nullable=True)
+    #This variable indicates whether it is a reading, homework, groupwork, lecture notes, or overall understanding question
+    question_content = db.Column(db.String(50), nullable=True)
     position = db.Column(db.Integer, nullable=True)
+
+    #Add the column below when quizzes are added to the data
+    #correct_answer = db.Column(db.Integer, db.ForeignKey('answers_choices.answer_choice_id'), nullable=True)
 
 
     answer_choices = db.relationship("AnswerChoice", 
                             secondary="questions_answer_choices", order_by=AnswerChoice.answer_choice_id,
                             backref=db.backref("questions"))
+
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Question question_id=%s question_type=%s" % (self.question_id, self.question_type)
+
+
 
 
 def __repr__(self):

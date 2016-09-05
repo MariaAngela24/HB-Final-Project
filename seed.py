@@ -85,10 +85,10 @@ def load_measures():
     for i, row in enumerate(open("seed_data/u.measure.txt")):
         row = row.rstrip()
         class_id, flag, status = row.split("|")
-        measure = Measure(class_id=class_id, 
+        measure = Measure(
+                        class_id=class_id,
                         flag=flag,
-                        #TO DO: Add datetime
-                        status=status) 
+                        status=status)
                         
         db.session.add(measure)
         db.session.commit()
@@ -104,7 +104,8 @@ def load_teachers_classes():
         row = row.rstrip()
         teacher_id, class_id, permission_level = row.split("|")
         teacher_class = TeacherClass(teacher_id=teacher_id, 
-                    class_id=class_id) 
+                    class_id=class_id,
+                    permission_level=permission_level) 
                         
         db.session.add(teacher_class)
         db.session.commit()
@@ -166,14 +167,15 @@ def load_questions():
 
     print "Questions"
 
-    for i, row in enumerate(open("seed_data/u.question.txt")):
+    for i, row in enumerate(open("seed_data/u.question.tsv")):
         row = row.rstrip()
-        measure_id, objective_id, prompt, flag, question_type, position = row.split("|")
+        measure_id, objective_id, prompt, measure_type, question_type, question_content, position = row.split("\t")
         question = Question(measure_id=measure_id, 
                             objective_id=objective_id,
                             prompt=prompt,
-                            flag=flag,
+                            measure_type=measure_type,
                             question_type=question_type,
+                            question_content=question_content,
                             position=position) 
                         
         db.session.add(question)
@@ -186,9 +188,9 @@ def load_answers_choices():
 
     print "Answers_Choices"
 
-    for i, row in enumerate(open("seed_data/u.answer_choice.txt")):
+    for i, row in enumerate(open("seed_data/u.answer_choice.tsv")):
         row = row.rstrip()
-        text, value, position = row.split("|")
+        text, value, position = row.split("\t")
         answer_choice = AnswerChoice(text=text,
                                     value=value,
                                     position=position) 
@@ -203,13 +205,31 @@ def load_questions_answers_choices():
 
     print "Questions_Answers_Choices"
 
-    for i, row in enumerate(open("seed_data/u.question_answer_choice.txt")):
+    for i, row in enumerate(open("seed_data/u.question_answer.tsv")):
         row = row.rstrip()
-        question_id, answer_choice_id = row.split("|")
+        question_id, answer_choice_id = row.split("\t")
         question_answer_choice = QuestionAnswerChoice(question_id=question_id,
                                                     answer_choice_id = answer_choice_id) 
                         
         db.session.add(question_answer_choice)
+        db.session.commit()
+        
+
+
+
+def load_response():
+    """Load answer choices into table"""
+
+    print "Responses"
+
+    for i, row in enumerate(open("seed_data/u.response.tsv")):
+        row = row.rstrip()
+        student_measure_id, question_id, response = row.split("\t")
+        response = Response(student_measure_id=student_measure_id, 
+                            question_id=question_id,
+                            response=response)         
+                        
+        db.session.add(response)
         db.session.commit()
 # def set_val_user_id():
 #     """Set value for the next user_id after seeding database"""
@@ -240,6 +260,7 @@ if __name__ == "__main__":
     load_questions()
     load_answers_choices()
     load_questions_answers_choices()
+    load_response()
 
 
   

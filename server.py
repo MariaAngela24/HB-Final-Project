@@ -89,9 +89,11 @@ def index():
     student_id = student_object.student_id
     student_class_object = StudentClass.query.filter_by(student_id=student_id).first()
     class_id = student_class_object.class_id
+    student_class_id = student_class_object.student_class_id
 
     session["student_id"] = student_id
     session["class_id"] = class_id
+    session["student_class_id"] = student_class_id
 
 
     return render_template("student-homepage.html")
@@ -113,9 +115,26 @@ def average_objective_self_rating():
     """Returns an average of all self-ratings for each objective."""
 
     student_id = session["student_id"]
+    class_id = session["class_id"]
+    objective_list = Objective.query.filter_by(class_id=class_id).all()
+    objective_numbers = []
+    for objective in objective_list:
+        objective_number = objective.objective_number
+        objective_numbers.append(objective_number)
+    print objective_numbers
+
+    questions_dictionary = {}
+    for objective in objective_list:
+        questions = Question.query.filter_by(objective_id=objective.objective_id).all()
+        print questions
+
+    #session["objective_list"] = objective_list
+
+   
+    #TO DO: Make Objective numbers dynamic from list in objective_numbers
     # data_object = Response.query.filter_by(student_id=student_id).all()
     data_dict = {
-        "labels": ["1.1", "2.2", "2.3", "2.4", "2.5", "2.6", "3.2", "3.3", "4.2", "4.3", "5.2", "5.3", "6.2"],
+        "labels": objective_numbers,
         "datasets": [
             {
                 "label": "Average Self-Rating",
@@ -240,30 +259,33 @@ def survey_process():
 
 
 
-# @app.route('/melon-types.json')
-# def melon_types_data():
-#     """Return data about Melon Sales."""
+@app.route('/study-notes/')
+def show_study_notes():
+    """Show personal study notes page"""
 
-#     data_dict = {
-#                 "labels": [
-#                     "Christmas Melon",
-#                     "Crenshaw",
-#                 ],
-#                 "datasets": [
-#                     {
-#                         "data": [300, 50],
-#                         "backgroundColor": [
-#                             "#FF6384",
-#                             "#36A2EB",
-#                         ],
-#                         "hoverBackgroundColor": [
-#                             "#FF6384",
-#                             "#36A2EB",
-#                         ]
-#                     }]
-#             }
+    class_id = session["class_id"]
+    objective_list = Objective.query.filter_by(class_id=class_id).all()
 
-#     return jsonify(data_dict)
+    
+    
+  
+    
+    return render_template("study-notes.html", objective_list=objective_list)
+
+
+# @app.route('/study_notes/')
+# def show_study_notes():
+#     """Show personal study notes page"""
+
+#     objective_list = session["objective_list"]
+    #TO DO: Account for case when there is more than one measure in a session
+    #Measure id was hard coded in button on homepage that links to this route. This captures the 
+    #Measure id and stored it in the session
+    
+
+    
+       #TO DO , Send measure _object in above line of code)
+
 
 # Need to make separate routes for teacher login and student login
 
