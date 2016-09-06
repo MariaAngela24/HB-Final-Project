@@ -87,6 +87,7 @@ def index():
     #Using email address returned by Google OAuth to query for student_id and storing student_id in web session
     student_object = Student.query.filter_by(username=email).first()
     student_id = student_object.student_id
+    username = student_object.username
     student_class_object = StudentClass.query.filter_by(student_id=student_id).first()
     class_id = student_class_object.class_id
     student_class_id = student_class_object.student_class_id
@@ -94,6 +95,7 @@ def index():
     session["student_id"] = student_id
     session["class_id"] = class_id
     session["student_class_id"] = student_class_id
+    session["username"] = username
 
 
     return render_template("student-homepage.html")
@@ -138,13 +140,34 @@ def average_objective_self_rating():
     
     response_dictionary = dict(response_tuples)
 
-    print response_dictionary
+    # response_dictionary = {}
+
+    # for tup in response_tuples:
+    #     if tup[0] not in response_dictionary:
+    #         objective_id = tup[0]
+    #         response = tup[1]
+    #         response_dictionary[objective_id] = response
+
+    #     if tup[0] in response_dictionary:
+    #         objective_id = tup[0]
+    #         current_response_list = [response_dictionary[objective_id]]
+    #         print "current_response_list=", current_response_list
+    #         current_response_list.append(response_dictionary[objective_id])
+    #         print "current_response_list_update", current_response_list
+    #         new_response = tup[1]
+    #         updated_response_list = current_response_list.append(new_response)
+
+
+    print "response_dictionary=", response_dictionary
     response_data = []
     for item in objective_ids:
         response_value = response_dictionary.get(item)
-        print "response_value=", response_value
         response_data.append(response_value)
         print "response_data=", response_data
+
+    #for each response tupke, if objective is already in there, gt list of response, append new response,
+    #set new list as value for key
+    #if key is not already in dictionary, create new key
 
     #TO DO: Find a way to add additional values to dictionary if key already exists.  Average all values
     #Can use sum in math function and divide by length

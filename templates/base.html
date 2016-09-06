@@ -1,52 +1,105 @@
 <!doctype html>
 <html>
     <head>
-        <h1>Map My Learning</h1>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <h2>Alliant 2210 - Introduction to Statistics</h2>
-        <title>Map My Learning</title>
-        
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="../../favicon.ico">
+
         <!-- Style -->
+        <!-- Bootstrap core CSS -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-        <link href="/static/style.css" rel="stylesheet"></link>
+
+        <link href="navbar-fixed-top.css" rel="stylesheet">
         <!-- TO DO: Investigate line of code below (found in chart.js lecture) -->
         <!-- <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css"> -->
+        <!-- TO DO: Determine if line below is necessary -->
+        <link href="/static/style.css" rel="stylesheet"></link>
+        
         <!-- Javascript imports -->
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
     </head>
     <body>
-    {% block content %}
-        
-    <!-- TO DO: Complete login in and logout routes using code below -->
-    <!--  {% if "user_id" in session %}
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/login">Login</a>
-    {% endif %} -->
-
-    <!-- TO DO: Decide if I want to use flashed messages for any incorrect  user actions -->
-    <!-- {% for flash in get_flashed_messages() %}
-      {{ flash }}
-    {% endfor %} -->
-
-        Put your body here.
-        <body>
-          <div class="container-fluid"> NAVBAR HERE </div>
+            <!-- Fixed navbar -->
+        <nav class="navbar navbar-default navbar-fixed-top">
           <div class="container">
-            <div class="row">
-              <div class="col-xs-12"> MAIN CONTENT HERE </div>
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">Map My Learning</a>
             </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/study-notes/">My Notes</a></li>
+                 <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Take Survey <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/end-of-class-survey/1">Homework</a></li>
+                    <li><a href="/end-of-class-survey/2">End of Class</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+               
+              <!-- TO DO: Complete login in and logout routes using code below -->
+                <!--  {% if "user_id" in session %}
+                    <a href="/logout">Logout</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                {% endif %} --> 
+                <li class="active"><a href="/">Logout <span class="sr-only">(current)</span></a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
           </div>
-        </body>
+        </nav>
 
+
+        <div class="container"> 
+            <!-- <div class="jumbotron"> -->
+                    
+          <!-- <div class="row"> -->  <!-- </div> -->
+            
+                <div class="col-xs-9"> 
+    
+                {% block content %}
+                    
+
+                <!-- TO DO: Decide if I want to use flashed messages for any incorrect  user actions -->
+                <!-- {% for flash in get_flashed_messages() %}
+                  {{ flash }}
+                {% endfor %} -->
+
+                    Put your body here.
+                   
+                {% endblock %}
+                </div>
+
+                <div class="col-xs-3">
+                <h3>Graded Assessments<h3>
+                    <h4><b>Midterm:</b> Thursday, Oct. 20</h4>
+                    <h4><b>Final:</b> Tuesday, Dec. 13</h4>
+                    <h4><b>Lab Assessments:</b></h4>
+                        <p><b>Quiz 1 -</b> Friday, Sept. 9</p>
+                        <p><b>Lab 1 -</b> Friday, Sept. 16</p>
+                        <p><b>Quiz 2 -</b> Friday, Sept. 23</p>
+                        <p><b>Quiz 3 -</b> Friday, Sept. 30</p>
+                        <p><b>Lab 2 -</b> Friday, Oct. 14</p>
+                        
+                </div>
+            </div>
+        </div>
+    
+    
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-    {% endblock %}
-    <p><a href="/end-of-class-survey/1">Begin Homework Survey</a></p>
-    <p><a href="/end-of-class-survey/2">Begin End of Class Survey</a></p>
-    <p><a href="/">Go to My Learning Map</a></p>
-    <p><a href="/study-notes/">Go to My Study Notes</a></p>
 
     </body>
 </html>
