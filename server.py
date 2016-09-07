@@ -132,12 +132,10 @@ def average_objective_self_rating():
     for objective in objective_list:
         objective_id = objective.objective_id
         objective_ids.append(objective_id)
-    print objective_ids
 
 
     #Create a list of tuples that contains objective_id and response for all questions answered by student
     response_tuples = db.session.query(Question.objective_id, Response.response).filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).join(Response).join(StudentMeasure).all()
-    print response_tuples
     
     response_dictionary = dict(response_tuples)
 
@@ -159,12 +157,10 @@ def average_objective_self_rating():
     #         updated_response_list = current_response_list.append(new_response)
 
 
-    print "response_dictionary=", response_dictionary
     response_data = []
     for item in objective_ids:
         response_value = response_dictionary.get(item)
         response_data.append(response_value)
-        print "response_data=", response_data
 
     #for each response tupke, if objective is already in there, gt list of response, append new response,
     #set new list as value for key
@@ -240,7 +236,6 @@ def count_of_objectives():
 @app.route('/end-of-class-survey/<measure_id>', methods=['GET'])
 def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
-    print "measure_id from button", measure_id
 
     #TO DO: Account for case when there is more than one measure in a session
     #Measure id was hard coded in button on homepage that links to this route. This captures the 
@@ -269,13 +264,11 @@ def end_of_class_survey_form(measure_id):
 def survey_process():
     """Process responses from survey"""
 
-    print request.form
 
     #Pulls measure_id out of session
     measure_id = session["measure_id"] 
     #This get requests grabs value for student_measure_id that was hidden in the form
     student_measure_id = request.form.get("student_measure_id")
-    print student_measure_id
     
     #Names of inputs on survey form are the question id's. Next block of code uses measure id to query database
     #for the list of questions in the form and then creates a list of the question id's used to render survey form
