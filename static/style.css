@@ -1,7 +1,8 @@
-.melon-chart {
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
+body {
+    padding-top: 50px;
+    font-family: 'Montserrat', sans-serif;
+    padding-bottom: 70px;
+    font-size: 18px;
 }
 
 .chart-legend li span {
@@ -11,9 +12,24 @@
     margin-right: 5px;
 }
 
-/*.navbar-fixed-top {
-    background-color: #35BAF6;
-}*/
+a {
+    color: #f7f7f7;
+}
+
+
+.navbar-brand {
+    color: #f7f7f7;
+    font-size: 24px;
+}
+
+
+.navbar-fixed-top {
+    background-color: #3F51B5;
+    color: #f7f7f7;
+    font-size: 18px;
+    }
+
+
 .bs-docs-header {
     /*padding-top: 60px;*/
     padding-bottom: 60px;
@@ -27,31 +43,21 @@
 .bs-docs-header, .bs-docs-masthead {
     position: relative;
     padding: 30px 0;
-    color: #cdbfe3;
+    color: #f7f7f7;
     text-align: left;
     text-shadow: 0 1px 0 rgba(0,0,0,.1);
-    background-color: #3F51B5;
+    background-color: #009688;
 
 }
 
-body {
-    padding-top: 50px;
-    font-family: 'Playfair Display';
-    padding-bottom: 70px;
-}
 
-/*h2 {
-    text-align: center;
-    margin-bottom: 2em;
-}
-*/
 ul
 {
     list-style-type: none;
 }
 
 .intro h2 {
-    font-family: 'Playfair Display';
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
     font-style: italic;
     margin-bottom: 15px;
@@ -59,6 +65,23 @@ ul
     color: rgb(255, 255, 255);
     text-align: center;
 }
+
+
+p {
+    text-indent: 20px;
+}
+
+/*TO DO: Debug to add style to textarea inputs*/
+/*textarea#styled {
+    width: 600px;
+    height: 120px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    font-family: Tahoma, sans-serif;
+    background-image: url(bg.gif);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+}*/
 
 h1, h2, h3, p {
     padding: 0;

@@ -13,6 +13,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
 
+from sqlalchemy.sql import func
 #This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
 
@@ -180,7 +181,7 @@ def average_objective_self_rating():
                 "label": "Average Self-Rating",
                 "fill": True,
                 "lineTension": 0,
-                "backgroundColor": "rgba(220,220,220,0.2)",
+                "backgroundColor": "rgba(220,220,220,0.4)",
                 "borderColor": "rgba(220,220,220,1)",
                 "borderCapStyle": 'butt',
                 "borderDash": [],
@@ -210,9 +211,9 @@ def count_of_objectives():
 
     data_dict = {
                 "labels": [
-                    "1-2",
-                    "3",
-                    "4-5"
+                    "Objectives I understand well",
+                    "Objectives I partially understand",
+                    "Objectives I do not understand"
                 ],
                 "datasets": [
                     {

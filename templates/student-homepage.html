@@ -2,29 +2,20 @@
 {% block content %}
 
 <title>Learning Maps</title>
-  <div id="content" class="bs-docs-header" tabindex="-1">
-    <div class="container">
-      <div class="col-xs-9">
-        <h2>MY LEARNING MAPS</h3>
-      </div>
-    </div>
-  </div>
-
 
 <div class="container bs-docs-container">
   <div class="row">
      <div class="col-md-9" role="main">
         <div class="bs-docs-section">
-          <h2 id="average-self-ratings" class="page-header">Average Self-Ratings by Objective</h2>
-          <p>This map shows an average of all the survey question you answered about
-            the learning objectives we have covered so far in class.</p>  
+          <h2 id="average-self-ratings" class="page-header">My Learning Over Time</h2>
+          At the beginning and end of every class, you answered several surveys. The questions in those surveys asked you to rate how well you understood the learning objectives that were covered in class. This map shows the average of all your answers for each learning objective. <br><br>  
           <div class="learning-map">
             <canvas id="lineChart"></canvas>
             <div id="lineLegend" class="chart-legend"></div>
           </div>
 
-          <h2 id="objective-counts" class="page-header">Count of Average Self-Ratings</h2>
-          <p>This map shows a count of the number of objectives that had an average self-rating of 1-2, 3, or 4-5</p>
+          <h2 id="objective-counts" class="page-header">How Much Have I Learned?</h2>
+          This map shows the total number of objectives that you understand well, the total number of objectives that you partially understand, and the total number of objectives that you do not understand. <br><br>
           <div class="learning-map">
             <canvas id="donutChart"></canvas>
             <div id="donutLegend" class="chart-legend"></div>
@@ -65,15 +56,16 @@
 
       <div class="col-md-3" role="complementary">
         <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix-top">
-          <h4>Graded Assessments<h4>
+              <br><br>
+              <h4><b>IMPORTANT DATES</b><h4>
               <h4><b>Midterm:</b> Thursday, Oct. 20</h4>
               <h4><b>Final:</b> Tuesday, Dec. 13</h4>
               <h4><b>Lab Assessments:</b></h4>
-                  <p><b>Quiz 1 -</b> Friday, Sept. 9</p>
-                  <p><b>Lab 1 -</b> Friday, Sept. 16</p>
-                  <p><b>Quiz 2 -</b> Friday, Sept. 23</p>
-                  <p><b>Quiz 3 -</b> Friday, Sept. 30</p>
-                  <p><b>Lab 2 -</b> Friday, Oct. 14</p>
+                  <p>Quiz 1 - Friday, Sept. 9</p>
+                  <p>Lab 1 - Friday, Sept. 16</p>
+                  <p>Quiz 2 - Friday, Sept. 23</p>
+                  <p>Quiz 3 - Friday, Sept. 30</p>
+                  <p>Lab 2 - Friday, Oct. 14</p>
         </nav>
                         
       </div>

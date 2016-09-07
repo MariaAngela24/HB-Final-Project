@@ -15,7 +15,7 @@
 <!-- <title> {{ measure_object.flag }} </title> -->
 <!-- <script src="/static/js/surveys.js"></script> -->
 <div class="container">
-    <div class="col-lg-6">
+    <div class="col-lg-9">
         <!-- <h2> {{ measure_object.flag }} </h2> -->
 
         <form id="survey" action="/end-of-class-survey/" method="POST">
@@ -25,7 +25,7 @@
                 {% for question in q_list %}
                     {% if question.question_type == "Likert scale" %} 
                         <ul>
-                            <li> {{ question.prompt }} </li>
+                            <li><b> {{ question.prompt }} </b></li>
                                 {% for choice in question.answer_choices %}  
                                     <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
                                 {% endfor %}
@@ -34,7 +34,7 @@
 
                     {% if question.question_type == "percent" %} 
                         <ul>
-                            <li> {{ question.prompt }} </li>
+                            <li><b> {{ question.prompt }} </b></li>
                                 {% for choice in question.answer_choices %}  
                                     <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
                                 {% endfor %}
@@ -43,11 +43,11 @@
 
                     {% if question.question_type == "free response" %} 
                         <ul>
-                            <li class="responses"> {{ question.prompt }} </li>
-                            <input type="textarea" name=  "{{ question.question_id }}">
+                            <li class="responses"><b> {{ question.prompt }} </b></li>
+                            <input type="textarea" id="styled" name=  "{{ question.question_id }}">
                         </ul>
                     {% endif %}
-                {% endfor %}
+                <br>{% endfor %}
                     
             <div>
                 <input type="hidden" name="student_measure_id" value= "{{ student_measure_id }}">
