@@ -1,18 +1,27 @@
 <!-- TO DO: Remove skewers from file name -->
 {% extends 'base.html' %}
 {% block content %}
+
 <title> {{ measure_object.flag }} </title>
+  <div id="content" class="bs-docs-header" tabindex="-1">
+    <div class="container">
+      <div class="col-xs-9">
+        <h2> {{ measure_object.flag }} </h3>
+      </div>
+    </div>
+  </div>
+
+
+<!-- <title> {{ measure_object.flag }} </title> -->
 <!-- <script src="/static/js/surveys.js"></script> -->
+<div class="container">
+    <div class="col-lg-6">
+        <!-- <h2> {{ measure_object.flag }} </h2> -->
 
-<div class="col-lg-6">
-    <h2> {{ measure_object.flag }} </h2>
-
-    <form id="survey" action="/end-of-class-survey/" method="POST">
-        <!-- TO DO: Check the open/close relationship for all these tags -->
-        
-        <div class="form-group">
-            <label>
-                
+        <form id="survey" action="/end-of-class-survey/" method="POST">
+            <!-- TO DO: Check the open/close relationship for all these tags -->
+            
+            <div class="form-group">           
                 {% for question in q_list %}
                     {% if question.question_type == "Likert scale" %} 
                         <ul>
@@ -39,17 +48,18 @@
                         </ul>
                     {% endif %}
                 {% endfor %}
-                
-        <div>
-            <input type="hidden" name="student_measure_id" value= "{{ student_measure_id }}">
-        </div>
+                    
+            <div>
+                <input type="hidden" name="student_measure_id" value= "{{ student_measure_id }}">
+            </div>
 
-        <div>
-            <input type="submit" value="Submit">
-        </div>
-        <div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+            <div>
 
-    </form>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
