@@ -218,14 +218,14 @@ def count_of_objectives():
                     {
                         "data": [12, 4, 6],
                         "backgroundColor": [
-                            "#FF6384",
-                            "#36A2EB",
-                            "#FFCE56"
+                            "#F44336",
+                            "#FFC107",
+                            "#4CAF50"
                         ],
                         "hoverBackgroundColor": [
-                            "#FF6384",
-                            "#36A2EB",
-                            "#FFCE56"
+                            "#F44336",
+                            "#FFC107",
+                            "#4CAF50"
                         ]
                     }]
             }
@@ -239,6 +239,7 @@ def count_of_objectives():
 @app.route('/end-of-class-survey/<measure_id>', methods=['GET'])
 def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
+    print "measure_id from button", measure_id
 
     #TO DO: Account for case when there is more than one measure in a session
     #Measure id was hard coded in button on homepage that links to this route. This captures the 
@@ -306,26 +307,10 @@ def show_study_notes():
 
     class_id = session["class_id"]
     objective_list = Objective.query.filter_by(class_id=class_id).all()
-
-    
-    
   
     
     return render_template("study-notes.html", objective_list=objective_list)
 
-
-# @app.route('/study_notes/')
-# def show_study_notes():
-#     """Show personal study notes page"""
-
-#     objective_list = session["objective_list"]
-    #TO DO: Account for case when there is more than one measure in a session
-    #Measure id was hard coded in button on homepage that links to this route. This captures the 
-    #Measure id and stored it in the session
-    
-
-    
-       #TO DO , Send measure _object in above line of code)
 
 
 # Need to make separate routes for teacher login and student login

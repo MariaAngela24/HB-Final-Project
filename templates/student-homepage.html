@@ -1,54 +1,82 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <title>Learning Maps</title>
+  <div id="content" class="bs-docs-header" tabindex="-1">
+    <div class="container">
+      <div class="col-xs-9">
+        <h2>MY LEARNING MAPS</h3>
+      </div>
+    </div>
+  </div>
 
-<h3>My Learning Map</h3>
 
- <!-- <div class="row">
-    <div class="col-xs-6">  -->
+<div class="container bs-docs-container">
+  <div class="row">
+     <div class="col-md-9" role="main">
+        <div class="bs-docs-section">
+          <h2 id="average-self-ratings" class="page-header">Average Self-Ratings by Objective</h2>
+          <p>This map shows an average of all the survey question you answered about
+            the learning objectives we have covered so far in class.</p>  
+          <div class="learning-map">
+            <canvas id="lineChart"></canvas>
+            <div id="lineLegend" class="chart-legend"></div>
+          </div>
+
+          <h2 id="objective-counts" class="page-header">Count of Average Self-Ratings</h2>
+          <p>This map shows a count of the number of objectives that had an average self-rating of 1-2, 3, or 4-5</p>
+          <div class="learning-map">
+            <canvas id="donutChart"></canvas>
+            <div id="donutLegend" class="chart-legend"></div>
+        </div>
+      </div>
+    </div>
   
-      <div class="learning-map">
-        <canvas id="lineChart"></canvas>
-        <div id="lineLegend" class="chart-legend"></div>
-      </div>
-
-      <div class="learning-map">
-        <canvas id="donutChart"></canvas>
-        <div id="donutLegend" class="chart-legend"></div>
-      </div>
-    <!-- </div>
-  </div> -->
-
-
+        
   <script>
-    var options = {
-      responsive: true
-    };
+      var options = {
+        responsive: true
+      };
 
-    // Make Line Chart of average self-ratings over time
-    var ctx_line = $("#lineChart").get(0).getContext("2d");
+      // Make Line Chart of average self-ratings over time
+      var ctx_line = $("#lineChart").get(0).getContext("2d");
 
-    $.get("/objective-averages.json", function (data) {
-      var myLineChart = Chart.Line(ctx_line, {
-                                    data: data,
-                                    options: options
-                                });
-      $("#lineLegend").html(myLineChart.generateLegend());
-    });
+      $.get("/objective-averages.json", function (data) {
+        var myLineChart = Chart.Line(ctx_line, {
+                                      data: data,
+                                      options: options
+                                  });
+        $("#lineLegend").html(myLineChart.generateLegend());
+      });
 
 
-    // Make Donut Chart of percent of different types of Melons
-    var ctx_donut = $("#donutChart").get(0).getContext("2d");
+      // Make Donut Chart of percent of different types of Melons
+      var ctx_donut = $("#donutChart").get(0).getContext("2d");
 
-    $.get("/objective-counts.json", function (data) {
-      var myDonutChart = new Chart(ctx_donut, {
-                                              type: 'doughnut',
-                                              data: data,
-                                              options: options
-                                            });
-      $('#donutLegend').html(myDonutChart.generateLegend());
-    });
-
+      $.get("/objective-counts.json", function (data) {
+        var myDonutChart = new Chart(ctx_donut, {
+                                                type: 'doughnut',
+                                                data: data,
+                                                options: options
+                                              });
+        $('#donutLegend').html(myDonutChart.generateLegend());
+      });
   </script>
+
+      <div class="col-md-3" role="complementary">
+        <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix-top">
+          <h4>Graded Assessments<h4>
+              <h4><b>Midterm:</b> Thursday, Oct. 20</h4>
+              <h4><b>Final:</b> Tuesday, Dec. 13</h4>
+              <h4><b>Lab Assessments:</b></h4>
+                  <p><b>Quiz 1 -</b> Friday, Sept. 9</p>
+                  <p><b>Lab 1 -</b> Friday, Sept. 16</p>
+                  <p><b>Quiz 2 -</b> Friday, Sept. 23</p>
+                  <p><b>Quiz 3 -</b> Friday, Sept. 30</p>
+                  <p><b>Lab 2 -</b> Friday, Oct. 14</p>
+        </nav>
+                        
+      </div>
+</div>
     
 {% endblock %}

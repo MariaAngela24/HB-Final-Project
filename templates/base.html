@@ -7,16 +7,18 @@
 
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" href="../../favicon.ico">
+
+        <link rel="icon" href="../../favicon.ico"></link>
 
         <!-- Style -->
+        <!-- Link to font family  -->
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet"> 
         <!-- Bootstrap core CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="navbar-fixed-top.css" rel="stylesheet">
-        <!-- TO DO: Investigate line of code below (found in chart.js lecture) -->
-        <!-- <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css"> -->
-        <!-- TO DO: Determine if line below is necessary -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"></link>
+        <!-- Had to comment out line below to debug a problem with route.  May need it later. -->
+        <!-- <link href="navbar-fixed-top.css" rel="stylesheet"></link> -->
+        
+        <!-- Link to my CSS styles  -->
         <link href="/static/style.css" rel="stylesheet"></link>
         
         <!-- Javascript imports -->
@@ -24,7 +26,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script>
     </head>
     <body>
-            <!-- Fixed navbar -->
+        <!-- Fixed navbar from Bootstrap -->
         <nav class="navbar navbar-default navbar-fixed-top">
           <div class="container">
             <div class="navbar-header">
@@ -50,7 +52,7 @@
               </ul>
               <ul class="nav navbar-nav navbar-right">
                
-              <!-- TO DO: Complete login in and logout routes using code below -->
+                <!-- TO DO: Complete login in and logout routes using code below -->
                 <!--  {% if "user_id" in session %}
                     <a href="/logout">Logout</a>
                 {% else %}
@@ -61,18 +63,12 @@
             </div><!--/.nav-collapse -->
           </div>
         </nav>
-
-
-        <div class="container"> 
-            <!-- <div class="jumbotron"> -->
-                    
-          <!-- <div class="row"> -->  <!-- </div> -->
-            
-                <div class="col-xs-9"> 
     
+        <body>
+        <!-- <div class="container">  -->
+                             
                 {% block content %}
                     
-
                 <!-- TO DO: Decide if I want to use flashed messages for any incorrect  user actions -->
                 <!-- {% for flash in get_flashed_messages() %}
                   {{ flash }}
@@ -81,22 +77,8 @@
                     Put your body here.
                    
                 {% endblock %}
-                </div>
-
-                <div class="col-xs-3">
-                <h3>Graded Assessments<h3>
-                    <h4><b>Midterm:</b> Thursday, Oct. 20</h4>
-                    <h4><b>Final:</b> Tuesday, Dec. 13</h4>
-                    <h4><b>Lab Assessments:</b></h4>
-                        <p><b>Quiz 1 -</b> Friday, Sept. 9</p>
-                        <p><b>Lab 1 -</b> Friday, Sept. 16</p>
-                        <p><b>Quiz 2 -</b> Friday, Sept. 23</p>
-                        <p><b>Quiz 3 -</b> Friday, Sept. 30</p>
-                        <p><b>Lab 2 -</b> Friday, Oct. 14</p>
-                        
-                </div>
-            </div>
-        </div>
+               
+        <!-- </div> -->
     
     
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>

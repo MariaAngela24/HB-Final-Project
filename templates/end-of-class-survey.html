@@ -4,46 +4,52 @@
 <title> {{ measure_object.flag }} </title>
 <!-- <script src="/static/js/surveys.js"></script> -->
 
-<h2> {{ measure_object.flag }} </h2>
+<div class="col-lg-6">
+    <h2> {{ measure_object.flag }} </h2>
 
-<form id="survey" action="/end-of-class-survey/" method="POST">
-    <!-- TO DO: Check the open/close relationship for all these tags -->
-    <div>
-        <label>
-            
-            {% for question in q_list %}
-                {% if question.question_type == "Likert scale" %} 
-                    <li> {{ question.prompt }} </li>
+    <form id="survey" action="/end-of-class-survey/" method="POST">
+        <!-- TO DO: Check the open/close relationship for all these tags -->
+        
+        <div class="form-group">
+            <label>
+                
+                {% for question in q_list %}
+                    {% if question.question_type == "Likert scale" %} 
                         <ul>
-                            {% for choice in question.answer_choices %}  
-                                <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
-                            {% endfor %}
+                            <li> {{ question.prompt }} </li>
+                                {% for choice in question.answer_choices %}  
+                                    <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
+                                {% endfor %}
                         </ul>
-                {% endif %}
+                    {% endif %}
 
-                {% if question.question_type == "percent" %} 
-                    <li> {{ question.prompt }} </li>
+                    {% if question.question_type == "percent" %} 
                         <ul>
-                            {% for choice in question.answer_choices %}  
-                                <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
-                            {% endfor %}
+                            <li> {{ question.prompt }} </li>
+                                {% for choice in question.answer_choices %}  
+                                    <li class="responses"><input type="radio" name= "{{ question.question_id }}" value= "{{ choice.value }}" > {{ choice.text }}</li> 
+                                {% endfor %}
                         </ul>
-                {% endif %}
+                    {% endif %}
 
-                {% if question.question_type == "free response" %} 
-                    <li class="responses"> {{ question.prompt }} </li>
-                    <input type="textarea" name=  "{{ question.question_id }}">
-                {% endif %}
-            {% endfor %}
-            </ol>
-    <div>
-        <input type="hidden" name="student_measure_id" value= "{{ student_measure_id }}">
-    </div>
+                    {% if question.question_type == "free response" %} 
+                        <ul>
+                            <li class="responses"> {{ question.prompt }} </li>
+                            <input type="textarea" name=  "{{ question.question_id }}">
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+                
+        <div>
+            <input type="hidden" name="student_measure_id" value= "{{ student_measure_id }}">
+        </div>
 
-    <div>
-        <input type="submit" value="Submit">
-    </div>
+        <div>
+            <input type="submit" value="Submit">
+        </div>
+        <div>
 
-</form>
+    </form>
+</div>
 
 {% endblock %}
