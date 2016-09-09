@@ -37,11 +37,12 @@
                                       data: data,
                                       options: options
                                   });
-        $("#lineLegend").html(myLineChart.generateLegend());
+        // Uncomment line below to add legend
+        // $("#lineLegend").html(myLineChart.generateLegend());
       });
 
 
-      // Make Donut Chart of percent of different types of Melons
+      // Make Donut Chart 
       var ctx_donut = $("#donutChart").get(0).getContext("2d");
 
       $.get("/objective-counts.json", function (data) {
@@ -50,7 +51,7 @@
                                                 data: data,
                                                 options: options
                                               });
-        $('#donutLegend').html(myDonutChart.generateLegend());
+        // $('#donutLegend').html(myDonutChart.generateLegend());
       });
   </script>
 

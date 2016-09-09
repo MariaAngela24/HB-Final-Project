@@ -2,38 +2,28 @@
 """Map My Learning."""
 
 from jinja2 import StrictUndefined
-
-from flask import Flask, render_template, request, flash, redirect, session, jsonify
-#Had to pip install flask_debug_toolbar to get this to run.  
+from flask import Flask, render_template, request, flash, redirect, session, jsonify  
 from flask import url_for
 from flask_oauth import OAuth
- 
-
 from flask_debugtoolbar import DebugToolbarExtension
-
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
-
 from sqlalchemy.sql import func
 #This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
-
 import json
 
-REDIRECT_URI = '/oauth2callback'  # one of the Redirect URIs from Google APIs console
-
+# one of the Redirect URIs from Google APIs console
+REDIRECT_URI = '/oauth2callback'  
 # Required to use Flask sessions and the debug toolbar
 SECRET_KEY = 'ABC'
 DEBUG = True
 
-
 app = Flask(__name__)
 app.debug = DEBUG
 app.secret_key = SECRET_KEY
-oauth = OAuth()
-
 app.jinja_env.undefined = StrictUndefined
 
-
+oauth = OAuth()
 google = oauth.remote_app('google',
                           base_url='https://www.google.com/accounts/',
                           authorize_url='https://accounts.google.com/o/oauth2/auth',
@@ -77,22 +67,27 @@ def index():
     user_info = res.read()
     user_info_dict = json.loads(user_info)
     
-    #Use to view user info returned by Google OAuth
+    #Use next two linesto view user info returned by Google OAuth
     #print type(user_info_dict)
     #print user_info_dict
     
     #Grabbing email address returned by Google OAuth. Note: Dictionary returned from Google OAuth is called user_info
-    #(Changing this to email=user_info.get("email", None) would allow me to set None as the default. 
-        #That may be useful when setting up case for creating new accounts) 
+    #Note: Changing this to email=user_info.get("email", None) would allow me to set None as the default. 
+    #That may be useful when setting up case for creating new accounts. 
     email=user_info_dict["email"]
-    #Using email address returned by Google OAuth to query for student_id and storing student_id in web session
+    #Using email address returned by Google OAuth to query for student object 
     student_object = Student.query.filter_by(username=email).first()
+    #getting student_id and username from student_object 
     student_id = student_object.student_id
     username = student_object.username
+    #Using student_id to query database for student_class object
+    #TO DO: Need to account for case when students are in multiple classes
     student_class_object = StudentClass.query.filter_by(student_id=student_id).first()
+    #getting class_id and student_class_id from student_class object
     class_id = student_class_object.class_id
     student_class_id = student_class_object.student_class_id
 
+    #storing id's and username in web session to be able to access them in other routes
     session["student_id"] = student_id
     session["class_id"] = class_id
     session["student_class_id"] = student_class_id
@@ -100,16 +95,6 @@ def index():
 
 
     return render_template("student-homepage.html")
-
-
-# @app.route("/map-data.json")
-# def map_data():
-#     """Return student measure data"""
-
-#     # objectives_objects = Objective.query.all()
-#     # print objectives_objects
-
-#     @app.route('/melon-times.json')
 
 
 
@@ -122,7 +107,7 @@ def average_objective_self_rating():
     class_id = session["class_id"]
     #Get list of all objective objects
     objective_list = Objective.query.filter_by(class_id=class_id).all()
-    #Create list of just objective numbers from objective object
+    #Create lists of just objective numbers and objective_ids from objective object
     objective_numbers = []
     for objective in objective_list:
         objective_number = objective.objective_number
@@ -137,44 +122,22 @@ def average_objective_self_rating():
     #Create a list of tuples that contains objective_id and response for all questions answered by student
     response_tuples = db.session.query(Question.objective_id, Response.response).filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).join(Response).join(StudentMeasure).all()
     
+    #Create dictionary of objective_ids and responses
     response_dictionary = dict(response_tuples)
 
-    # response_dictionary = {}
-
-    # for tup in response_tuples:
-    #     if tup[0] not in response_dictionary:
-    #         objective_id = tup[0]
-    #         response = tup[1]
-    #         response_dictionary[objective_id] = response
-
-    #     if tup[0] in response_dictionary:
-    #         objective_id = tup[0]
-    #         current_response_list = [response_dictionary[objective_id]]
-    #         print "current_response_list=", current_response_list
-    #         current_response_list.append(response_dictionary[objective_id])
-    #         print "current_response_list_update", current_response_list
-    #         new_response = tup[1]
-    #         updated_response_list = current_response_list.append(new_response)
-
-
+    #Creating a list of responses in order by objective_id
     response_data = []
     for item in objective_ids:
         response_value = response_dictionary.get(item)
         response_data.append(response_value)
-
-    #for each response tupke, if objective is already in there, gt list of response, append new response,
-    #set new list as value for key
-    #if key is not already in dictionary, create new key
-
-    #TO DO: Find a way to add additional values to dictionary if key already exists.  Average all values
-    #Can use sum in math function and divide by length
    
     
+    #Creating a dictionary of data and chart options that can be sent to student homepage
     data_dict = {
         "labels": objective_numbers,
         "datasets": [
             {
-                "label": "Average Self-Rating",
+                "label": "Average self-rating for each learning objective",
                 "fill": True,
                 "lineTension": 0,
                 "backgroundColor": "rgba(220,220,220,0.4)",
@@ -197,6 +160,8 @@ def average_objective_self_rating():
             
         ]
     }
+
+    #jsonify command is necessary because data above must be passed through route as a string
     return jsonify(data_dict)
 
 
@@ -205,6 +170,7 @@ def average_objective_self_rating():
 def count_of_objectives():
     """Return data of the count of objective with average self-rating within certain ranges."""
 
+    #Creating donut chart
     data_dict = {
                 "labels": [
                     "Objectives I understand well",
@@ -215,21 +181,20 @@ def count_of_objectives():
                     {
                         "data": [12, 4, 6],
                         "backgroundColor": [
-                            "#F44336",
+                            "#4CAF50",
                             "#FFC107",
-                            "#4CAF50"
+                            "#F44336"
                         ],
                         "hoverBackgroundColor": [
-                            "#F44336",
+                            "#4CAF50",
                             "#FFC107",
-                            "#4CAF50"
+                            "#F44336"
+                            
                         ]
                     }]
             }
 
     return jsonify(data_dict)
-
-    #TO DO: Add a page for students to choose from a list of classes (query StudentClass table for all rows with matching student_id)
 
 
 
@@ -237,22 +202,22 @@ def count_of_objectives():
 def end_of_class_survey_form(measure_id):
     """Show form for End of Class Survey."""
 
+
+
+    #Captures measure_id sent to route when student clicks survey button on homepage
     #TO DO: Account for case when there is more than one measure in a session
-    #Measure id was hard coded in button on homepage that links to this route. This captures the 
-    #Measure id and stored it in the session
     session["measure_id"] = measure_id
+    #Uses measure_id to query database for measure object
     measure_object = Measure.query.filter_by(measure_id=measure_id).first()
     #Rebinds the variable name "student"id" to the student_id stored in the session
     student_id = session["student_id"]
-    #TO DO: Allow new student measure objects to be created here when I am no
-    #long repeatedly answering the same measure
-    student_measure_object = StudentMeasure.query.filter_by(student_id=student_id, measure_id=measure_id).first()
+    #TO DO: Add functionality that allows new student measure objects to be created
+    student_measure_object = StudentMeasure.query.filter_by(student_id=student_id, measure_id=measure_id).first() 
     student_measure_id = student_measure_object.student_measure_id
     
     #Queries database for all questions tagged with specified measure_id. Returns a list of objects 
     q_list = Question.query.filter_by(measure_id=measure_id).all()
   
-   
 
     #Renders survey form, passes list of question objects and student measure id to form
     return render_template("end-of-class-survey.html", q_list=q_list, student_measure_id=student_measure_id, measure_object=measure_object)
@@ -267,11 +232,11 @@ def survey_process():
 
     #Pulls measure_id out of session
     measure_id = session["measure_id"] 
-    #This get requests grabs value for student_measure_id that was hidden in the form
+    #Grabs value for student_measure_id that was hidden in the form
     student_measure_id = request.form.get("student_measure_id")
     
-    #Names of inputs on survey form are the question id's. Next block of code uses measure id to query database
-    #for the list of questions in the form and then creates a list of the question id's used to render survey form
+    #Names of inputs on survey form are the question id's, so question_ids are variables. Next block of code uses measure id to query database
+    #for the question objects that rendered on the form, then creates a new list of the question id's used to render the survey form
     q_list = Question.query.filter_by(measure_id=measure_id).all()
     question_ids = []
     for question in q_list:
@@ -299,6 +264,7 @@ def survey_process():
 def show_study_notes():
     """Show personal study notes page"""
 
+    #TO DO: Complete this feature
     class_id = session["class_id"]
     objective_list = Objective.query.filter_by(class_id=class_id).all()
   
@@ -307,7 +273,7 @@ def show_study_notes():
 
 
 
-# Need to make separate routes for teacher login and student login
+#TO DO: make separate routes for teacher login and student login
 
 @app.route('/login')
 def login():
@@ -333,6 +299,7 @@ def get_access_token():
 
 
 
+#TO DO: Add logout functionality
 # @app.route('/logout')
 # def logout():
 #     """Log out."""
@@ -340,81 +307,6 @@ def get_access_token():
 #     del session["user_id"]
 #     flash("Logged Out.")
 #     return redirect("/")
-
-
-# @app.route("/users")
-# def user_list():
-#     """Show list of users."""
-
-#     users = User.query.all()
-#     return render_template("user_list.html", users=users)
-
-
-# @app.route("/users/<int:user_id>")
-# def user_detail(user_id):
-#     """Show info about user."""
-
-#     user = User.query.get(user_id)
-#     return render_template("user.html", user=user)
-
-
-# @app.route("/movies")
-# def movie_list():
-#     """Show list of movies."""
-
-#     movies = Movie.query.order_by('title').all()
-#     return render_template("movie_list.html", movies=movies)
-
-
-# @app.route("/movies/<int:movie_id>", methods=['GET'])
-# def movie_detail(movie_id):
-#     """Show info about movie.
-
-#     If a user is logged in, let them add/edit a rating.
-#     """
-
-#     movie = Movie.query.get(movie_id)
-
-#     user_id = session.get("user_id")
-
-#     if user_id:
-#         user_rating = Rating.query.filter_by(
-#             movie_id=movie_id, user_id=user_id).first()
-
-#     else:
-#         user_rating = None
-
-#     return render_template("movie.html",
-#                            movie=movie,
-#                            user_rating=user_rating)
-
-
-# @app.route("/movies/<int:movie_id>", methods=['POST'])
-# def movie_detail_process(movie_id):
-#     """Add/edit a rating."""
-
-#     # Get form variables
-#     score = int(request.form["score"])
-
-#     user_id = session.get("user_id")
-#     if not user_id:
-#         raise Exception("No user logged in.")
-
-#     rating = Rating.query.filter_by(user_id=user_id, movie_id=movie_id).first()
-
-#     if rating:
-#         rating.score = score
-#         flash("Rating updated.")
-
-#     else:
-#         rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#         flash("Rating added.")
-#         db.session.add(rating)
-
-#     db.session.commit()
-
-#     return redirect("/movies/%s" % movie_id)
-
 
 
 
@@ -426,6 +318,6 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    # DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
     app.run(host='0.0.0.0')

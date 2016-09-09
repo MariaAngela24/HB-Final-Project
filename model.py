@@ -2,17 +2,12 @@
 """Models and database functions for Ratings project."""
 import heapq
 import time
-#Delete the line below when server file is created
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-#This was from ratings.  Will probably delete if not used
-#import correlation
-
-
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
+# object, where we do most of the interactions (like committing, etc.)
 
 db = SQLAlchemy()
 
@@ -104,7 +99,6 @@ class Student(db.Model):
     __tablename__ = "students"
 
     student_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #QUESTION: Which (if any) of these should be False for nullable?
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
     grade = db.Column(db.Integer, nullable=True)
@@ -151,7 +145,6 @@ class Response(db.Model):
     response_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     student_measure_id = db.Column(db.Integer, db.ForeignKey('students_measures.student_measure_id'))
     question_id = db.Column(db.Integer, db.ForeignKey('questions.question_id'))
-    #QUESTION: Is this a good character limit for a text field?
     response = db.Column(db.String(500), nullable=True)
 
     # TO DO: decide if I need to define relationship to any other tables
@@ -174,9 +167,8 @@ class Measure(db.Model):
     #The variable below indicates the type of measure, such as homework survey
     #end of class survey, or quiz
     flag = db.Column(db.String(64), nullable=True)  
-    #TO DO: Add correct datetime syntax to variable below
+    #TO DO: Add datetime variable
     #sent_time = db.Column(db Datetime????) 
-    #QUESTION: Should I add when it closed as a variable in this database or do I control for it on the flask side?
     #The variable below tracks whether measure has never been opened, is open and waiting
     #for responses, or is closed
     status = db.Column(db.String(20), nullable=True)
@@ -209,8 +201,10 @@ class Subject(db.Model):
 
         return "<Subject subject_id=%s name=%s" % (self.subject_id, self.name)
 
-#TO DO: Need to account for many to many relationship between objectives and questions. Also need
-#to account for many to many relationship between objectives and classes
+
+
+#TO DO: Need to account for many to many relationship between objectives and questions. 
+#Also need to account for many to many relationship between objectives and classes
 class Objective(db.Model):
     """Learning objectives"""
 
@@ -237,9 +231,7 @@ class AnswerChoice(db.Model):
     __tablename__ = "answers_choices"
 
     answer_choice_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    #QUESTION: What should I do for other answer choice types, such as images?
     text = db.Column(db.String(150), nullable=True)
-    #QUESTION: Do I need to make any additional specifications?
     value = db.Column(db.Float, nullable=True)
     position = db.Column(db.Integer, nullable=True)
 
@@ -358,11 +350,6 @@ def example_data():
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
-
-    #Uncomment when line 191 is moved back to server
-    #from server import app
     from server import app
     connect_to_db(app)
     print "Connected to DB."
