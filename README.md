@@ -16,7 +16,7 @@ Python, Flask, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap, Chart.js, jQuery, JSON
 
 
 ![Homepage] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/Screen%20Shot%202016-09-09%20at%202.11.32%20AM.png)
-![Survey]
+![Survey] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/Screen%20Shot%202016-09-09%20at%202.11.47%20AM.png)
 
 ####
 
