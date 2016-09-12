@@ -137,10 +137,10 @@ def average_objective_self_rating():
         "labels": objective_numbers,
         "datasets": [
             {
-                "label": "Average self-rating for each learning objective",
+                "label": "Average self-rating by learning objective",
                 "fill": True,
                 "lineTension": 0,
-                "backgroundColor": "rgba(220,220,220,0.4)",
+                "backgroundColor": "rgba(220,220,220,0.6)",
                 "borderColor": "rgba(220,220,220,1)",
                 "borderCapStyle": 'butt',
                 "borderDash": [],

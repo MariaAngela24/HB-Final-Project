@@ -35,7 +35,17 @@
       $.get("/objective-averages.json", function (data) {
         var myLineChart = Chart.Line(ctx_line, {
                                       data: data,
-                                      options: options
+                                      options: {
+                                        scales: {
+                                          yAxes:[{
+                                            ticks: {
+                                              max: 5,
+                                              min: 0,
+                                              stepSize: 1
+                                            }
+                                          }]
+                                        }
+                                      }
                                   });
         // Uncomment line below to add legend
         // $("#lineLegend").html(myLineChart.generateLegend());
