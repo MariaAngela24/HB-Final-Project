@@ -14,9 +14,9 @@ representations to help students create study plans for high-stakes midterm and 
 ####Technologies Used
 Python, Flask, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap, Chart.js, jQuery, JSON, Google OAuth
 
-
-![Homepage] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/Screen%20Shot%202016-09-09%20at%202.11.32%20AM.png)
-![Survey] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/Screen%20Shot%202016-09-09%20at%202.11.47%20AM.png)
+![Homepage - Line Chart View] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/static/img/Screen%20Shot%202016-09-11%20at%2010.53.45%20PM.png)
+![Homepage - Donut Chart View] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/static/img/Screen%20Shot%202016-09-09%20at%202.11.32%20AM.png)
+![Survey] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/static/img/Screen%20Shot%202016-09-09%20at%202.11.47%20AM.png)
 
 ####
 
