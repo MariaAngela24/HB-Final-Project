@@ -8,6 +8,8 @@ from flask_oauth import OAuth
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, Teacher, TeacherClass, Class, StudentClass, Student, StudentMeasure, Response, Measure, Subject, Objective, Question, QuestionAnswerChoice, AnswerChoice
 from sqlalchemy.sql import func
+from sqlalchemy import cast, Numeric
+
 #This is to access environment variables (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET) that we loaded via terminal
 import os
 import json
@@ -120,10 +122,20 @@ def average_objective_self_rating():
 
 
     #Create a list of tuples that contains objective_id and response for all questions answered by student
-    response_tuples = db.session.query(Question.objective_id, Response.response).filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).join(Response).join(StudentMeasure).all()
+    #Need to look up what numeric means and see if adjusting that will get me a value with less decimal places
+    #Need to convert average value from a decimal back to something JSON serializable, which is probably going to 
+    #be a string.  Easiest answer may be to cast it back to a string. Need to look at available types for JSON
+    response_tuples = db.session.query(Question.objective_id, func.avg(cast(Response.response, Numeric(10, 4)))).\
+                                        filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).\
+                                        join(Response).\
+                                        join(StudentMeasure).\
+                                        group_by(Question.objective_id).\
+                                        all()
+    print "response_tuples=", response_tuples
     
     #Create dictionary of objective_ids and responses
     response_dictionary = dict(response_tuples)
+    print "response_dictionary=", response_dictionary
 
     #Creating a list of responses in order by objective_id
     response_data = []
