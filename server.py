@@ -125,12 +125,16 @@ def average_objective_self_rating():
     #Need to look up what numeric means and see if adjusting that will get me a value with less decimal places
     #Need to convert average value from a decimal back to something JSON serializable, which is probably going to 
     #be a string.  Easiest answer may be to cast it back to a string. Need to look at available types for JSON
-    response_tuples = db.session.query(Question.objective_id, func.avg(cast(Response.response, Numeric(10, 4)))).\
+    response_tuples = db.session.query(Question.objective_id, func.avg(cast(Response.response, Numeric(precision=4, scale=3, decimal_return_scale=3, zerofill=False, asdecimal=True)))).\
                                         filter(Question.question_type=="Likert scale", StudentMeasure.student_id==student_id).\
                                         join(Response).\
                                         join(StudentMeasure).\
                                         group_by(Question.objective_id).\
                                         all()
+    # response_tuples_clean = []
+    # for response in response_tuples:
+    #     new_tuple = (response(0), response
+
     print "response_tuples=", response_tuples
     
     #Create dictionary of objective_ids and responses
