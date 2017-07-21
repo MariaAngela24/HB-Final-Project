@@ -11,7 +11,7 @@ chart that shows the number of learning objectives students have fully mastered,
 partially mastered, and the number of learning objectives they still need to learn. Teachers can also use these visual 
 representations to help students create study plans for high-stakes midterm and final exams.   
 
-####Technologies Used
+##Technologies Used
 Python, Flask, SQLAlchemy, PostgreSQL, Jinja2, Bootstrap, Chart.js, jQuery, JSON, Google OAuth
 
 ![Homepage - Line Chart View] (https://github.com/MariaAngela24/HB-Final-Project/blob/master/static/img/Screen%20Shot%202016-09-11%20at%2010.53.45%20PM.png)
